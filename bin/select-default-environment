@@ -1,0 +1,5 @@
+#!/bin/sh
+env=$($HOME/.bin/select-environment)
+if [ -n "$env" ]; then
+  echo -n $env > $HOME/.env/current
+fi

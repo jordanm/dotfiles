@@ -1,0 +1,45 @@
+[begin] (...)
+[exec] (term) {start-terminal}
+[exec] (gvim) {gvim}
+[exec] (firefox) {firefox}
+[exec] (chromium) {chromium}
+[exec] (eclipse) {eclipse}
+[exec] (skype) {skype}
+[nop]
+[exec] (gimp) {gimp}
+[exec] (gthumb) {gthumb}
+[exec] (inkscape) {inkscape}
+[exec] (blender) {blender}
+[exec] (meld) {meld}
+[exec] (pyroom) {pyroom}
+[exec] (scribus) {scribus}
+[exec] (thunar) {thunar}
+[nop]
+[exec] (eterm) {Eterm}
+[exec] (pidgin) {pidgin -n}
+[exec] (virtualbox) {VirtualBox}
+[exec] (vlc) {vlc}
+[exec] (writer) {soffice}
+[nop]
+[submenu] (vms) {...}
+    [exec] (solaris) {VirtualBox -startvm solaris}
+    [exec] (winxp) {VirtualBox -startvm xp}
+[end]
+[submenu] (fluxbox) {...}
+    [commanddialog] (command)
+    [config] (configure)
+    [exec] (edit files) {gvim -p ~/.fluxbox/menu ~/.fluxbox/keys ~/.fluxbox/apps}
+    [submenu] (styles) {...}
+        [stylesdir] (~/.fluxbox/styles)
+    [end]
+    [reconfig] (reconfigure)
+    [restart] (restart)
+[end]
+[workspaces] (workspaces)
+[nop]
+[exec] (suspend) {sudo /usr/sbin/pm-suspend}
+[exec] (hibernate) {sudo /usr/sbin/pm-hibernate}
+[exec] (restart) {sudo shutdown -r now}
+[exec] (shutdown) {sudo shutdown -h now}
+[exit] (exit)
+[nop]

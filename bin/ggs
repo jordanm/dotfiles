@@ -1,0 +1,29 @@
+#!/bin/sh
+projects=/home/jrm/p
+
+switch_to_modified="no"
+if [ "$1" = "-s" ]; then
+    switch_to_modified="yes"
+fi
+
+for dir in $(ls -1 --color=no /home/jrm/p); do
+    project="$projects/$dir"
+    if [ -d "$project/.git" ]; then
+        (
+        cd $project
+        modified=$(git status -uno -s | wc -l)
+        if [ "$modified" -ne "0" ]; then
+            if [ "$switch_to_modified" = "yes" ]; then
+                exit 1
+            fi
+            echo $dir
+        fi
+        )
+        if [ $? -eq "1" ]; then
+            exec cd $project
+            cd $project
+            pwd
+            exit 0
+        fi
+    fi
+done

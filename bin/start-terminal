@@ -1,0 +1,11 @@
+#!/bin/bash
+env=${1-"$(< $HOME/.env/current)"}
+if [ "$env" == "none" ]; then
+  PATH="$BASEPATH" PROMPTPREFIX="" exec /usr/bin/lilyterm
+else
+  args=""
+  if [ -e "$HOME/.env/$env/base" ]; then
+    args="-d $(< $HOME/.env/$env/base)"
+  fi
+  PATH="$HOME/.env/$env/bin:$BASEPATH" PROMPTPREFIX="[$env] " exec /usr/bin/lilyterm $args
+fi
