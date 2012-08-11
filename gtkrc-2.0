@@ -1,0 +1,9 @@
+gtk-theme-name = "MurrinaCandido"
+gtk-icon-theme-name = "Human"
+gtk-font-name = "Trebuchet MS 6"
+gtk-icon-sizes = "gtk-menu=16,16 : gtk-button=16,16 : gtk-small-toolbar=16,16 : gtk-large-toolbar=16,16 : gtk-dialog=32,32 : gtk-dnd=32,32"
+style "user-font"
+{
+    font_name="Trebuchet MS 6"
+}
+widget_class "*" style "user-font"
