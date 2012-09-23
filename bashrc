@@ -27,6 +27,7 @@ shopt -s checkwinsize
 shopt -s cmdhist
 shopt -s dotglob
 shopt -s extglob
+shopt -s histappend
 shopt -s nocaseglob
 shopt -s no_empty_cmd_completion
 shopt -u mailwarn
@@ -40,7 +41,6 @@ alias df='df -kTh'
 alias ds='du -h --max-depth=1'
 alias du='du -h'
 alias g='egrep --color'
-alias gt='find . -type f -print | grep -v ".swp" | grep -v ".pyc" | xargs grep -ls $@'
 alias h='history'
 alias i='ipython'
 alias j='jobs -l'
@@ -56,6 +56,15 @@ alias q='exit'
 alias tree='tree -l'
 alias pytree='tree --dirsfirst -P "*.py" -I "__init__.py"'
 alias rhino='java -cp /usr/share/java/js.jar org.mozilla.javascript.tools.shell.Main -opt -1'
+
+gt() {
+  if [ "$1" = "-c" ]; then
+    shift
+    find . -type f -print | egrep -v "\.sw[p|o]|\.py[c|o]|\.png|\.gif|/\.git/|/\.svn/|/_doctrees/|/\.project/" | xargs grep -Hns --color $@
+  else
+    find . -type f -print | egrep -v "\.sw[p|o]|\.py[c|o]|\.png|\.gif|/\.git/|/\.svn/|/_doctrees/|/\.project/" | xargs grep -ls --color $@
+  fi
+}
 
 alias gad='git add'
 alias gau='git add -u'
