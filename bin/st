@@ -1,0 +1,29 @@
+#!/bin/bash
+targets=$HOME/.ssh-targets
+
+if [[ "$1" == "-h" ]]; then
+  exit
+fi
+if [[ "$1" == "-e" ]]; then
+  exec vim $targets
+fi
+if [[ "$1" == "-s" ]]; then
+  cat $targets
+  exit
+fi
+
+copying=0
+if [[ "$1" == "-c" ]]; then
+  copying=1
+  shift
+fi
+
+name=$1
+shift
+
+target=$(grep "^$name " $targets | cut -d' ' -f2)
+if [[ "$copying" == "1" ]]; then
+  exec scp $1 $target:$2
+else
+  exec ssh $target $@
+fi

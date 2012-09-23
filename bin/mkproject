@@ -1,16 +1,17 @@
-#!/bin/sh
-if [ -d ".project" ]; then
+#!/bin/bash
+if [[ -d .project ]]; then
   echo ".project already exists; aborting"
   exit 1
 fi
 
-if [ -n "$1" ]; then
-  base="$HOME/p/$1/.project"
-  if [ -d "$base" ]; then
+name=$1
+if [[ -n "$name" ]]; then
+  base="$HOME/p/$name/.project"
+  if [[ -d $base ]]; then
     echo "using $base as template"
     cp -R $base .
   else
-    echo "$1 is not a project; aborting"
+    echo "$name is not a project; aborting"
     exit 1
   fi
 else
