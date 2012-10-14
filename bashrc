@@ -1,13 +1,13 @@
 source ~/.git-completion.sh
 
 parse_git_branch() {
-    local ref=$(git symbolic-ref HEAD 2>/dev/null)
-    if [ -n "$ref" ]; then
-        local w=""
-        git diff --no-ext-diff --quiet --exit-code || w="+"
-        git diff-index --cached --quiet HEAD -- || w="+"
-        echo " ("${ref#refs/heads/}$w")"
-    fi
+  local ref=$(git symbolic-ref HEAD 2>/dev/null)
+  if [ -n "$ref" ]; then
+    local w=""
+    git diff --no-ext-diff --quiet --exit-code || w="+"
+    git diff-index --cached --quiet HEAD -- || w="+"
+    echo " ("${ref#refs/heads/}$w")"
+  fi
 }
 
 export PS1="\[\033]0;${PROMPTPREFIX}\u@\h:\w\007\]\[\033[0;33m\]${PROMPTPREFIX}\u$($HOME/.prompt-hostname):\w\[\033[0;32m\]\$(parse_git_branch) \[\033[0m\]"
@@ -33,7 +33,7 @@ shopt -s no_empty_cmd_completion
 shopt -u mailwarn
 shopt -s sourcepath
 
-alias pq='psql -U postgres'
+alias pq='psql -Upostgres'
 alias ..='cd ..'
 alias brc='source ~/.bashrc'
 alias c='clear'
@@ -92,22 +92,22 @@ alias sva='svn add'
 alias cdp='cd /home/jrm/p/'
 
 ex() {
-    if [ -f $1 ]; then
-        case $1 in
-            *.tar.bz2) tar xjf $1 ;;
-            *.tar.gz) tar xzf $1 ;;
-            *.bz2) bunzip2 $1 ;;
-            *.gz) gunzip $1 ;;
-            *.tar) tar xf $1 ;;
-            *.tbz2) tar xjf $1 ;;
-            *.tgz) tar xzf $1 ;;
-            *.zip) unzip $1 ;;
-            *.Z ) uncompress $1 ;;
-            *) echo "'$1' cannot be extracted" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi  
+  if [ -f $1 ]; then
+    case $1 in
+      *.tar.bz2) tar xjf $1 ;;
+      *.tar.gz) tar xzf $1 ;;
+      *.bz2) bunzip2 $1 ;;
+      *.gz) gunzip $1 ;;
+      *.tar) tar xf $1 ;;
+      *.tbz2) tar xjf $1 ;;
+      *.tgz) tar xzf $1 ;;
+      *.zip) unzip $1 ;;
+      *.Z ) uncompress $1 ;;
+      *) echo "'$1' cannot be extracted" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi  
 }
 
 ff() { find . -type f -iname '*'$*'*' -print; }
@@ -127,14 +127,14 @@ vsed() { vim -u NONE -i NONE -Nnes "+se ul=-1" $1 "+update|q" $2; }
 
 unalias la 2>/dev/null
 la() {
-    ls -lahF "$@" | egrep "^d"
-    ls -lahFb "$@" 2>/dev/null | egrep -v "^d|total "
+  ls -lahF "$@" | egrep "^d"
+  ls -lahFb "$@" 2>/dev/null | egrep -v "^d|total "
 }
 
 unalias ll 2>/dev/null
 ll() {
-    ls -lhF "$@" | egrep "^d"
-    ls -lhFb "$@" 2>/dev/null | egrep -v "^d|total "
+  ls -lhF "$@" | egrep "^d"
+  ls -lhFb "$@" 2>/dev/null | egrep -v "^d|total "
 }
 
 gls() {
@@ -162,7 +162,6 @@ gls() {
         fi
     done
 }
-
 
 complete -A hostname rsh rcp telnet rlogin r ftp ping disk
 complete -A export printenv
