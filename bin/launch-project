@@ -5,8 +5,8 @@ if [[ -e $HOME/.last-project ]]; then
 fi
 
 name=$(zenity --entry --text="Project name:" --title="Launch Project" --entry-text="$lastname")
-if [[ -n "$name" ]]; then
-  path=$HOME/p/$name
+if [[ -n $name ]]; then
+  path=$PROJECTPATH/$name
   if [[ -d $path ]]; then
     cd $path
     script=$path/.project/launch.sh

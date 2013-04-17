@@ -1,11 +1,27 @@
 #!/bin/bash
-env=${1-"$(< $HOME/.env/current)"}
-if [ "$env" == "none" ]; then
-  PATH="$BASEPATH" PROMPTPREFIX="" exec /usr/bin/lilyterm
-else
-  args=""
-  if [ -e "$HOME/.env/$env/base" ]; then
-    args="-d $(< $HOME/.env/$env/base)"
+env=${1-none}
+if [[ $env == "last" ]]; then
+  if [[ -e $HOME/.last-environment ]]; then
+    env=$(< $HOME/.last-environment)
+  else
+    env="none"
   fi
-  PATH="$HOME/.env/$env/bin:$BASEPATH" PROMPTPREFIX="[$env] " exec /usr/bin/lilyterm $args
 fi
+
+if [[ $env == "none" ]]; then
+  PATH="$BASEPATH" PROMPTPREFIX="" exec $LILYTERM
+fi
+
+args=""
+if [[ -e $ENVPATH/$env/base ]]; then
+  args="-d $(< $ENVPATH/$env/base)"
+fi
+
+path="$BASEPATH"
+if [[ -e $ENVPATH/$env/path ]]; then
+  for entry in $(< $ENVPATH/$env/path); do
+    path="$entry:$path"
+  done
+fi
+
+ENV="$env" PATH="$ENVPATH/$env/bin:$path" PROMPTPREFIX="[$env] " exec $LILYTERM $args

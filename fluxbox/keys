@@ -1,33 +1,33 @@
-! fluxbox-update_configs added '(workspace=[current])' to (Next|Prev)(Window|Group)
-! check lines marked by 'FBCV13' if they are correctly updated
-!mouse actions added by fluxbox-update_configs
-OnTitlebar Mouse1 :MacroCmd {Focus} {Raise} {ActivateTab}
-!mouse actions added by fluxbox-update_configs
-OnTitlebar Move1 :StartMoving
-OnLeftGrip Move1 :StartResizing bottomleft
-OnRightGrip Move1 :StartResizing bottomright
-OnWindowBorder Move1 :StartMoving
-
-
-# mouse bindings
+# desktop bindings
 ondesktop mouse1 :hidemenus
 ondesktop mouse2 :clientmenu (workspace=[current])
 ondesktop mouse3 :rootmenu
 ondesktop mouse4 :nextworkspace
 ondesktop mouse5 :prevworkspace
+
+# toolbar bindings
+ontoolbar mouse4 :nextworkspace
+ontoolbar mouse5 :prevworkspace
+
+# titlebar bindings
+ontitlebar mouse1 :macrocmd {focus} {raise} {activatetab}
+ontitlebar move1 :startmoving
 ontitlebar mouse2 :starttabbing
 ontitlebar double mouse1 :close
 ontitlebar shift mouse1 :minimize
+ontitlebar mouse4 :minimize
 ontitlebar mouse3 :windowmenu
-ontoolbar mouse4 :nextworkspace
-ontoolbar mouse5 :prevworkspace
-onwindow mouse8 :macrocmd {raise} {focus} {startmoving}
-onwindow mouse9 :macrocmd {raise} {focus} {startresizing nearestcorner}
-onwindow mod4 mouse8 :shade
-onwindow mod4 mouse9 :minimize
+
+# window bindings
+onleftgrip move1 :startresizing bottomleft
+onrightgrip move1 :startresizing bottomright
+onwindowborder move1 :startmoving
 onwindow mod1 mouse1 :macrocmd {raise} {focus} {startmoving}
 onwindow mod1 mouse2 :starttabbing
 onwindow mod1 mouse3 :macrocmd {raise} {focus} {startresizing nearestcorner}
+
+# mouse bindings
+mod4 mouse1 :hidemenus
 mod4 mouse2 :togglecmd {clientmenu (workspace=[current])} {hidemenus}
 mod4 mouse3 :togglecmd {rootmenu} {hidemenus}
 mod4 mouse4 :prevworkspace
@@ -42,44 +42,43 @@ mod4 shift Left :movetableft
 mod4 shift Right :movetabright
 
 # window bindings
-mod4 w mod4 a :togglecmd {showdesktop} {deiconify all originquiet}
-mod4 w mod4 b :toggledecor
-mod4 w mod4 d :macrocmd {detachclient} {move 20 20}
-mod4 w mod4 f :maximize
-mod4 w mod4 h :maximizehorizontal
-mod4 w mod4 k :stick
-mod4 w mod4 l :foreach {macrocmd {raise} {focus}} {matches (class=[current])}
-mod4 w mod4 n :minimize
-mod4 w mod4 r :reconfigure
-mod4 w mod4 s :shade
-mod4 w mod4 v :maximizevertical
-mod4 w mod4 w :windowmenu
+#mod4 w mod4 a :togglecmd {showdesktop} {deiconify all originquiet}
+#mod4 w mod4 b :toggledecor
+#mod4 w mod4 d :macrocmd {detachclient} {move 20 20}
+#mod4 w mod4 f :maximize
+#mod4 w mod4 h :maximizehorizontal
+#mod4 w mod4 k :stick
+#mod4 w mod4 l :foreach {macrocmd {raise} {focus}} {matches (class=[current])}
+#mod4 w mod4 n :minimize
+#mod4 w mod4 r :reconfigure
+#mod4 w mod4 s :shade
+#mod4 w mod4 v :maximizevertical
+#mod4 w mod4 w :windowmenu
 
 # window position bindings
-#mod4 p mod4 7 :moveto 10 10 topleft
-#mod4 p mod4 8 :moveto 10 10 top
-#mod4 p mod4 9 :moveto 10 10 topright
-#mod4 p mod4 u :moveto 10 10 left
-#mod4 p mod4 i :moveto 0 0 center
-#mod4 p mod4 o :moveto 10 10 right
-#mod4 p mod4 j :moveto 10 10 bottomleft
-#mod4 p mod4 k :moveto 10 10 bottom
-#mod4 p mod4 l :moveto 10 10 bottomright
+mod4 o mod4 a :deiconify all originquiet
+mod4 o mod4 c :commanddialog
+mod4 o mod4 d :showdesktop
+mod4 o mod4 f :fullscreen
+mod4 o mod4 m :maximize
+mod4 o mod4 n :minimize
+mod4 o mod4 i :if {matches (lilyterm)} {moveto 5% 0 left} {macrocmd {resizeto 956 1064} {moveto 0 0 topleft}}
+mod4 o mod4 o :if {matches (lilyterm)} {moveto 0 0 center} {macrocmd {resizeto 1490 840} {moveto 0 0 center}}
+mod4 o mod4 l :macrocmd {resizeto 75% 100%} {moveto 0 0 topright}
+mod4 o mod4 p :if {matches (lilyterm)} {moveto 5% 0 right} {macrocmd {resizeto 956 1064} {moveto 0 0 topright}}
 
 # window moving keymode
-mod4 w mod4 m :keymode movemode
-movemode: None Up :moveup 2
-movemode: None Down :movedown 2
-movemode: None Left :moveleft 2
-movemode: None Right :moveright 2
-movemode: Shift Up :moveup 10
-movemode: Shift Down :movedown 10
-movemode: Shift Left :moveleft 10
-movemode: Shift Right :moveright 10
+#mod4 w mod4 m :keymode movemode
+#movemode: None Up :moveup 2
+#movemode: None Down :movedown 2
+#movemode: None Left :moveleft 2
+#movemode: None Right :moveright 2
+#movemode: Shift Up :moveup 10
+#movemode: Shift Down :movedown 10
+#movemode: Shift Left :moveleft 10
+#movemode: Shift Right :moveright 10
 
 # workspace bindings
-166 :prevworkspace
-167 :nextworkspace
 mod1 F1 :workspace 1
 mod1 F2 :workspace 2
 mod1 F3 :workspace 3
@@ -97,31 +96,30 @@ mod4 F6 :taketoworkspace 6
 mod4 F7 :taketoworkspace 7
 mod4 F8 :taketoworkspace 8
 
-# application bindings
-156 :exec /home/jrm/.bin/toggle-trackpad
-mod4 escape :quit
+# fluxbox bindings
 mod4 slash :rootmenu
-mod4 grave :exec fbrun -font "silkscreen-6" -w 200 -pos 620 440
-mod4 Return :cond {matches (class=Lilyterm)} {exec xdotool key -window $(xprop -root _NET_ACTIVE_WINDOW | cut -d \# -f 2) ctrl+p} {cond {some and {matches (class=Lilyterm)} {matches (workspace=[current])}} {activate (class=Lilyterm)} {exec start-terminal}}
-mod4 control Return :exec start-terminal
-mod4 backslash :exec start-environment-terminal
-mod4 space :cond {some and {matches (class=Gvim)} {matches (workspace=[current])}} {activate (class=Gvim)} {exec gvim}
-mod4 control space :exec gvim
-mod4 v :exec gvim
-mod4 b :exec battery-state
-mod4 c :cond {some and {matches (class=Chromium)} {matches (workspace=[current])}} {activate (class=Chromium)} {exec chromium}
-mod4 f :cond {some and {matches (class=Firefox)} {matches (workspace=[current])}} {activate (class=Firefox)} {exec firefox}
-mod4 h :exec sudo /usr/sbin/pm-hibernate
-mod4 i :exec Eterm
-mod4 l :exec xlock -erasedelay 0
-mod4 p :exec launch-project
-mod4 s :exec sudo /usr/sbin/pm-suspend
+#mod4 grave :exec fbrun -font "silkscreen-6" -w 200 -pos 620 440
+mod4 r :reconfigure
 mod4 q :close
-mod4 shift q :kill
-mod4 t :exec start-terminal none
-#mod4 t :cond {some and {matches (class=Thunar)} {matches (workspace=[current])}} {activate (class=Thunar)} {exec thunar}
+mod4 ctrl q :kill
+mod4 w :clientmenu (workspace=[current])
 
+# terminal bindings
+mod4 Return :if {some and {matches (lilyterm) (title!=console)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (lilyterm) (title!=console)} {exec start-terminal}
+mod4 apostrophe :exec start-terminal
+mod4 backslash :exec start-environment-terminal
+mod4 bracketright :exec start-terminal last
+mod4 grave :exec toggle-console
 
+# gvim bindings
+mod4 space :if {some matches (gvim)} {nextwindow (workspace=[current]) (gvim)} {exec gvim}
+mod4 v :exec gvim
+mod4 p :exec launch-project
 
-
-
+# application bindings
+mod4 c :if {some and {matches (google-chrome)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (google-chrome)} {exec google-chrome}
+mod4 f :if {some and {matches (Navigator)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (Navigator)} {exec firefox}
+mod4 n :if {some matches (Lotus Notes)} {activate (Lotus Notes)} {exec ibm-notes8}
+mod4 s :if {some matches (skype.bin) (role=ConversationsWindow)} {activate (skype.bin) (role=ConversationsWindow)} {if {some matches (skype.bin) (role=MainWindow)} {activate (skype.bin) (role=MainWindow)} {exec skype}}}
+mod4 Print :exec fbsetbg -r $HOME/.wallpapers
+mod4 l :exec $HOME/.fluxbox/lock-screen

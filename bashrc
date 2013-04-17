@@ -1,17 +1,12 @@
 source ~/.git-completion.sh
+source ~/.git-prompt.sh
 
-parse_git_branch() {
-  local ref=$(git symbolic-ref HEAD 2>/dev/null)
-  if [ -n "$ref" ]; then
-    local w=""
-    git diff --no-ext-diff --quiet --exit-code || w="+"
-    git diff-index --cached --quiet HEAD -- || w="+"
-    echo " ("${ref#refs/heads/}$w")"
-  fi
-}
+export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 
+export PS1="\[\033]0;${PROMPTPREFIX}\w\007\]\[\033[0;33m\]${PROMPTPREFIX}\w\[\033[0;32m\]\$(__git_ps1 ' (%s)') \[\033[0m\]"
 
-export PS1="\[\033]0;${PROMPTPREFIX}\u@\h:\w\007\]\[\033[0;33m\]${PROMPTPREFIX}\u$($HOME/.prompt-hostname):\w\[\033[0;32m\]\$(parse_git_branch) \[\033[0m\]"
-eval "$(dircolors /home/jrm/.dircolors)"
+if [[ -e $HOME/.dircolors ]]; then
+  eval "$(dircolors $HOME/.dircolors)"
+fi
 
 umask 002
 ulimit -S -c 0
@@ -33,32 +28,28 @@ shopt -s no_empty_cmd_completion
 shopt -u mailwarn
 shopt -s sourcepath
 
-alias pq='psql -Upostgres'
 alias ..='cd ..'
-alias brc='source ~/.bashrc'
 alias c='clear'
+alias cdp='cd ~/p/'
 alias df='df -kTh'
 alias ds='du -h --max-depth=1'
 alias du='du -h'
 alias g='egrep --color'
 alias h='history'
 alias i='ipython'
-alias j='jobs -l'
-alias l='less'
 alias ls='ls -hFH --color'
 alias lsd='find . -maxdepth 1 -type d'
-alias lt='tree -Csu'
-alias lterm='lilyterm'
 alias mkdir='mkdir -pv'
-alias nautilus='nautilus --no-desktop'
-alias rscp='rsync -a --progress --inplace --whole-file'
 alias q='exit'
 alias tree='tree -l'
 alias pytree='tree --dirsfirst -P "*.py" -I "__init__.py"'
-alias rhino='java -cp /usr/share/java/js.jar org.mozilla.javascript.tools.shell.Main -opt -1'
+
+gh() { 
+  history | egrep -v '  history|  gh' | grep --color $1 | tail -1
+}
 
 gt() {
-  if [ "$1" = "-c" ]; then
+  if [[ $1 == -c ]]; then
     shift
     find . -type f -print | egrep -v "\.sw[p|o]|\.py[c|o]|\.png|\.gif|/\.git/|/\.svn/|/_doctrees/|/\.project/" | xargs grep -Hns --color $@
   else
@@ -83,33 +74,6 @@ alias gst='git status'
 alias gmv='git mv'
 alias gmt='git checkout -b mt'
 
-alias svs='svn st'
-alias svu='svn up'
-alias svc='svn commit -m'
-alias svl='svn log -l 10'
-alias sva='svn add'
-
-alias cdp='cd /home/jrm/p/'
-
-ex() {
-  if [ -f $1 ]; then
-    case $1 in
-      *.tar.bz2) tar xjf $1 ;;
-      *.tar.gz) tar xzf $1 ;;
-      *.bz2) bunzip2 $1 ;;
-      *.gz) gunzip $1 ;;
-      *.tar) tar xf $1 ;;
-      *.tbz2) tar xjf $1 ;;
-      *.tgz) tar xzf $1 ;;
-      *.zip) unzip $1 ;;
-      *.Z ) uncompress $1 ;;
-      *) echo "'$1' cannot be extracted" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi  
-}
-
 ff() { find . -type f -iname '*'$*'*' -print; }
 ffr() { find / -type f -iname '*'$*'*' -ls; }
 fd() { find . -type d -iname '*'$*'*' -ls; }
@@ -121,7 +85,6 @@ p() { ps $@ -o pid,ppid,euser,tty,nice,stat,%cpu,%mem,vsz,rss,nlwp,args; }
 pe() { p -e; }
 pu() { p -u $USER; }
 
-gh() { history | egrep -v '  history|  gh' | grep --color $1 | tail -1; }
 mktar() { tar cjf "${1%%/}.tar.bz2" "${1%%/}/"; }
 vsed() { vim -u NONE -i NONE -Nnes "+se ul=-1" $1 "+update|q" $2; }
 
@@ -135,32 +98,6 @@ unalias ll 2>/dev/null
 ll() {
   ls -lhF "$@" | egrep "^d"
   ls -lhFb "$@" 2>/dev/null | egrep -v "^d|total "
-}
-
-gls() {
-    jump="no"
-    if [ "$1" = "-j" ]; then
-        jump="yes"
-    fi
-    for dir in $(ls -1 --color=no /home/jrm/p); do
-        pr="/home/jrm/p/$dir"
-        if [ -d "$pr/.git" ]; then
-            (
-            cd $pr
-            modified=$(git status -uno -s | wc -l)
-            if [ "$modified" -ne "0" ]; then
-                if [ "$jump" = "yes" ]; then
-                    exit 17
-                fi
-                echo $dir
-            fi
-            )
-            if [ $? -eq "17" ]; then
-                cd $pr
-                break
-            fi
-        fi
-    done
 }
 
 complete -A hostname rsh rcp telnet rlogin r ftp ping disk

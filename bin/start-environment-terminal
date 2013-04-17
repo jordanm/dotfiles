@@ -1,0 +1,14 @@
+#!/bin/bash
+last=""
+if [[ -e $HOME/.last-environment ]]; then
+  last=$(< $HOME/.last-environment)
+fi
+
+name=$(zenity --entry --text="Environment:" --title="Launch Environment" --entry-text="$last")
+if [[ -n $name ]]; then
+  path=$ENVPATH/$name
+  if [[ -d $path ]]; then
+    echo $name > $HOME/.last-environment
+    exec start-terminal "$name"
+  fi
+fi

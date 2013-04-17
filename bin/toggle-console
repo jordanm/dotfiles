@@ -1,0 +1,11 @@
+#!/bin/bash
+console=$(fluxbox-remote "clientpatterntest (lilyterm) (title=console)" && fluxbox-remote result | cut -f1)
+if [[ $console != 0 ]]; then
+  if [[ $console == $(xprop -root _NET_ACTIVE_WINDOW | cut -d' ' -f5) ]]; then
+    fluxbox-remote "minimize (lilyterm) (title=console)"
+  else
+    fluxbox-remote "activate (lilyterm) (title=console)"
+  fi
+else
+  $LILYTERM -T console &
+fi

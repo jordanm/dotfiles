@@ -1,24 +1,25 @@
 #!/bin/bash
-if [[ -d .project ]]; then
-  echo ".project already exists; aborting"
+pdir=.project
+if [[ -d $pdir ]]; then
+  echo "$pdir already exists, aborting"
   exit 1
 fi
 
 name=$1
-if [[ -n "$name" ]]; then
-  base="$HOME/p/$name/.project"
+if [[ -n $name ]]; then
+  base="$PROJECTPATH/$name/$pdir"
   if [[ -d $base ]]; then
     echo "using $base as template"
     cp -R $base .
   else
-    echo "$name is not a project; aborting"
+    echo "$name is not a project, aborting"
     exit 1
   fi
 else
-  mkdir .project
-  echo ".." > .project/tag-targets
-  touch .project/launch.sh
+  mkdir $pdir
+  echo ".." > $pdir/tag-targets
+  touch $pdir/launch.sh
 fi
 
-generate-project-tags .project
-echo ".project created"
+generate-project-tags $pdir
+echo "$pdir created"

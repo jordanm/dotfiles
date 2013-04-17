@@ -1,54 +1,21 @@
-[app] (name=fbrun)
-  [Position]	(CENTER)	{0 0}
-  [Deco]	{BORDER}
-  [Layer]	{2}
+[app] (fbrun)
+  [position] (WINCENTER) {0 0}
+  [layer] {2}
 [end]
-[app] (name=bashrun)
-  [Position]	(CENTER)	{0 0}
-  [Deco]	{NONE}
-  [Layer]	{2}
+[app] (gvim)
+  [position] (CENTER) {0 0}
 [end]
-[app] (class=vdpau)
-  [Layer]	{4}
+[app] (lilyterm) (title!=console)
+  [position] (CENTER) {0 0}
 [end]
-[app] (name=lilyterm)
-  [Position]	(CENTER)	{0 0}
+[app] (title=console)
+  [layer] {Dock}
+  [dimensions] {100% 50%}
+  [position] (topleft) {0 0}
+  [deco] {border}
+  [iconhidden] {yes}
+  [sticky] {yes}
 [end]
-[group]
- [app] (class=Eterm)
-  [Dimensions]	{1440 400}
-  [Position]	(UPPERLEFT)	{0 0}
-  [Deco]	{NONE}
-  [IconHidden]	{yes}
-  [Sticky]	{yes}
-  [Layer]	{2}
-  [Alpha]	{190}
-[end]
-[app] (class=Navigator) (role=browser)
-  [Dimensions]	{1300 830}
-  [Position]	(UPPERLEFT)	{20 20}
-[end]
-[app] (name=gvim)
-  [Position]	(UPPERLEFT)	{130 10}
-[end]
-[app] (class=Pidgin) (role=buddy_list)
-  [Position]	(UPPERRIGHT)	{10 10}
-  [IconHidden]	{yes}
-[end]
-[app] (class=Thunar) (role=Thunar-.*)
-  [Position]	(CENTER)	{0 0}
-[end]
-[app] (name=gimp)
-  [Workspace]	{2}
-  [Jump]	{yes}
-[end]
-[app] (name=gimp) (role=gimp-dock)
-  [Layer]	{4}
-[end]
-[app] (name=gimp) (role=gimp-toolbox)
-  [Layer]	{4}
-[end]
-[app]  (class=MPlayer)
-  [Layer]	{6}
-  [Position]	(UPPERRIGHT)	{10 10}
+[app] (agnclient)
+  [workspace] {2}
 [end]

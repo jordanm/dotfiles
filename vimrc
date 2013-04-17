@@ -268,6 +268,7 @@ au filetype javascript setlocal smartindent nocindent
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
 au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
 au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
+au BufRead,BufNewFile *.txt setlocal textwidth=0
 
 let g:pydiction_location = '/home/jrm/.vim/pydiction/complete-dict'
 let g:pyindent_open_paren = '&sw'
