@@ -1,4 +1,10 @@
 #!/bin/bash
+BR="\033[1;34m"
+NR="\033[0;34m"
+BB="\033[1;33m"
+NB="\033[0;33m"
+RS="\033[0m"
+
 for dir in $(ls -1 --color=no $PROJECTPATH); do
   project="$PROJECTPATH/$dir"
   if [[ -d "$project/.git" ]]; then
@@ -6,13 +12,16 @@ for dir in $(ls -1 --color=no $PROJECTPATH); do
     cd $project
     all=$(git status -s | wc -l)
     if [[ $all > 0 ]]; then
+      branch=$(git rev-parse --abbrev-ref HEAD)
       modified=$(git status -uno -s | wc -l)
       let "new = all - modified"
       if [[ $modified > 0 ]]; then
-        echo "$dir: $modified ($new)"
+        echo -e "$NR[$BR$modified$NR, $BR$new$NR] $BR$dir$NR: $branch$RS"
       else
-        echo -e "\033[0;34m$dir: $modified ($new)\033[0m"
+        echo -e "$NB[$BB$modified$NB, $BB$new$NB] $BB$dir$NB: $branch$RS"
       fi
+      git status -s
+      echo
     fi
     )
   fi
