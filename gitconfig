@@ -1,0 +1,31 @@
+[user]
+	name = Jordan McCoy
+	email = mccoy.jordan@gmail.com
+    editor = vim
+[color]
+    pager = true
+    ui = auto
+[alias]
+    ai = add --interactive
+    au = add -u
+    bn = branch
+    ci = commit
+    cl = clone
+    cm = commit -m
+    co = checkout
+    df = diff
+    dc = diff --cached
+    ft = fetch
+    last = "!f() { git cat-file commit HEAD $@ | git name-rev --stdin; }; f"
+    la = "!git config -l | grep alias | cut -c 7-"
+    lc = log ORIG_HEAD.. --state --no-merges
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    ll = log --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --stat
+    pl = pull
+    pu = push
+    push-head = !git push origin `git symbolic-ref HEAD`
+    sl = stash list
+    sp = stash pop
+    ss = stash save
+    st = status -s
+    whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"

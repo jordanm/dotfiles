@@ -4,8 +4,15 @@ for dir in $(ls -1 --color=no $PROJECTPATH); do
   if [[ -d "$project/.git" ]]; then
     (
     cd $project
-    if [[ $(git status -uno -s | wc -l) -ne 0 ]]; then
-      echo $dir
+    all=$(git status -s | wc -l)
+    if [[ $all > 0 ]]; then
+      modified=$(git status -uno -s | wc -l)
+      let "new = all - modified"
+      if [[ $modified > 0 ]]; then
+        echo "$dir: $modified ($new)"
+      else
+        echo -e "\033[0;34m$dir: $modified ($new)\033[0m"
+      fi
     fi
     )
   fi

@@ -1,8 +1,12 @@
-source ~/.git-completion.sh
-source ~/.git-prompt.sh
+for filename in "$HOME/.git-completion.sh" "$HOME/.git-prompt.sh" "$HOME/.bin/nvm"; do
+  if [[ -e $filename ]]; then
+    source $filename
+  fi
+done
 
 export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 
 export PS1="\[\033]0;${PROMPTPREFIX}\w\007\]\[\033[0;33m\]${PROMPTPREFIX}\w\[\033[0;32m\]\$(__git_ps1 ' (%s)') \[\033[0m\]"
+export PROMPT_COMMAND="history -a; history -n;"
 
 if [[ -e $HOME/.dircolors ]]; then
   eval "$(dircolors $HOME/.dircolors)"
@@ -30,19 +34,19 @@ shopt -s sourcepath
 
 alias ..='cd ..'
 alias c='clear'
-alias cdp='cd ~/p/'
 alias df='df -kTh'
 alias ds='du -h --max-depth=1'
 alias du='du -h'
-alias g='egrep --color'
+alias g='git'
 alias h='history'
 alias i='ipython'
 alias ls='ls -hFH --color'
 alias lsd='find . -maxdepth 1 -type d'
 alias mkdir='mkdir -pv'
-alias q='exit'
-alias tree='tree -l'
 alias pytree='tree --dirsfirst -P "*.py" -I "__init__.py"'
+alias q='exit'
+alias rmpyc='find . -name *.pyc -delete'
+alias tree='tree -l'
 
 gh() { 
   history | egrep -v '  history|  gh' | grep --color $1 | tail -1
@@ -75,11 +79,8 @@ alias gmv='git mv'
 alias gmt='git checkout -b mt'
 
 ff() { find . -type f -iname '*'$*'*' -print; }
-ffr() { find / -type f -iname '*'$*'*' -ls; }
-fd() { find . -type d -iname '*'$*'*' -ls; }
-fdr() { find / -type d -iname '*'$*'*' -ls; }
+fd() { find . -type d -iname '*'$*'*' -print; }
 fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;; }
-fer() { find / -type f -iname '*'$1'*' -exec "${2:-file}" {} \;; }
 
 p() { ps $@ -o pid,ppid,euser,tty,nice,stat,%cpu,%mem,vsz,rss,nlwp,args; }
 pe() { p -e; }

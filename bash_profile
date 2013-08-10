@@ -22,10 +22,11 @@ export CDPATH=.:~/p
 export EDITOR=vim
 export ENVPATH=$HOME/.env
 export HISTIGNORE="&"
-export HISTSIZE=1000
-export HISTFILESIZE=2000
+export HISTSIZE=999999
+export HISTFILESIZE=999999
 export LESS='-i -z-4 -g -M -X -F -R -Q'
 export LILYTERM="/opt/lilyterm/bin/lilyterm -s"
+export NVM_DIR=$HOME/.nvm
 export PAGER=less
 export PROJECTPATH=$HOME/p
 
