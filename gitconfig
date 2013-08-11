@@ -19,8 +19,8 @@
     last = "!f() { git cat-file commit HEAD $@ | git name-rev --stdin; }; f"
     la = "!git config -l | grep alias | cut -c 7-"
     lc = log ORIG_HEAD.. --state --no-merges
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    ll = log --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --stat
+    lg = log --pretty=format:'%C(magenta)%h %C(blue)%cr %C(yellow bold)%s%C(blue bold)%d %Creset%C(green)[%an]%Creset' --graph
+    ll = log --pretty=format:'%C(magenta)%h %C(blue)%cr %C(yellow bold)%s%C(blue bold)%d %Creset%C(green)[%an]%Creset' --stat
     pl = pull
     pu = push
     push-head = !git push origin `git symbolic-ref HEAD`
@@ -29,3 +29,7 @@
     ss = stash save
     st = status -s
     whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+[tig]
+    line-graphics = ascii
+    show-date = relative
+    show-id = true
