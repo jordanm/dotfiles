@@ -61,22 +61,22 @@ gt() {
   fi
 }
 
-alias gad='git add'
-alias gau='git add -u'
-alias gbn='git branch'
-alias gco='git checkout'
-alias gdf='git diff --color'
-alias gdft='git difftool'
-alias gft='git fetch'
-alias glg='git log'
-alias gcm='git commit -m'
-alias gpl='git pull'
-alias gpu='git push'
-alias gri='git rebase -i'
+alias gad='git ad'
+alias gai='git ai'
+alias gau='git au'
+alias gbn='git bn'
+alias gcm='git cm'
+alias gco='git co'
+alias gdc='git dc'
+alias gdf='git df'
+alias gft='git ft'
+alias glg='git lg'
+alias gll='git ll'
+alias gph='git ph'
+alias gpl='git pl'
+alias gpu='git pu'
 alias grp='git grep'
-alias gst='git status'
-alias gmv='git mv'
-alias gmt='git checkout -b mt'
+alias gst='git st'
 
 ff() { find . -type f -iname '*'$*'*' -print; }
 fd() { find . -type d -iname '*'$*'*' -print; }
