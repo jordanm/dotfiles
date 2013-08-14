@@ -112,15 +112,24 @@ complete -A directory mkdir rmdir
 complete -A job -P '%' fg jobs disown
 complete -A directory -o default cd
 
-complete -o bashdefault -o default -o nospace -F _git_add gad
-complete -o bashdefault -o default -o nospace -F _git_add gau
-complete -o bashdefault -o default -o nospace -F _git_branch gbn
-complete -o bashdefault -o default -o nospace -F _git_commit gcm
-complete -o bashdefault -o default -o nospace -F _git_checkout gco
-complete -o bashdefault -o default -o nospace -F _git_diff gdf
-complete -o bashdefault -o default -o nospace -F _git_diff gdft
-complete -o bashdefault -o default -o nospace -F _git_fetch gft
-complete -o bashdefault -o default -o nospace -F _git_grep grp
-complete -o bashdefault -o default -o nospace -F _git_log glg
-complete -o bashdefault -o default -o nospace -F _git_pull gpl
-complete -o bashdefault -o default -o nospace -F _git_push gpu
+__local_git_complete() {
+  local wrapper="__local_git_wrap${2}"
+  eval "$wrapper () { __git_func_wrap $2; }"
+  complete -o bashdefault -o default -o nospace -F $wrapper $1 2>/dev/null \
+    || complete -o default -o nospace -F $wrapper $1
+}
+
+__local_git_complete gad _git_add
+__local_git_complete gau _git_add
+__local_git_complete gbn _git_branch
+__local_git_complete gcm _git_commit
+__local_git_complete gco _git_checkout
+__local_git_complete gdc _git_diff
+__local_git_complete gdf _git_diff
+__local_git_complete gft _git_fetch
+__local_git_complete glg _git_log
+__local_git_complete gll _git_log
+__local_git_complete gph _git_push
+__local_git_complete gpl _git_pull
+__local_git_complete gpu _git_push
+__local_git_complete grp _git_grep
