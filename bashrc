@@ -27,12 +27,12 @@ shopt -s cmdhist
 shopt -s dotglob
 shopt -s extglob
 shopt -s histappend
-shopt -s nocaseglob
-shopt -s no_empty_cmd_completion
 shopt -u mailwarn
-shopt -s sourcepath
+shopt -s no_empty_cmd_completion
+shopt -s nocaseglob
 
 alias ..='cd ..'
+alias --='cd -'
 alias c='clear'
 alias df='df -kTh'
 alias ds='du -h --max-depth=1'
@@ -42,6 +42,7 @@ alias h='history'
 alias i='ipython'
 alias ls='ls -hFH --color'
 alias lsd='find . -maxdepth 1 -type d'
+alias map='xargs -n1'
 alias mkdir='mkdir -pv'
 alias pytree='tree --dirsfirst -P "*.py" -I "__init__.py"'
 alias q='exit'
@@ -82,6 +83,14 @@ ff() { find . -type f -iname '*'$*'*' -print; }
 fd() { find . -type d -iname '*'$*'*' -print; }
 fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;; }
 
+fs() {
+  if [[ -n "$@" ]]; then
+    du -sbh -- "$@"
+  else
+    du -sbh .[^.]* *
+  fi
+}
+
 p() { ps $@ -o pid,ppid,euser,tty,nice,stat,%cpu,%mem,vsz,rss,nlwp,args; }
 pe() { p -e; }
 pu() { p -u $USER; }
@@ -100,6 +109,13 @@ ll() {
   ls -lhF "$@" | egrep "^d"
   ls -lhFb "$@" 2>/dev/null | egrep -v "^d|total "
 }
+
+hash git &>/dev/null
+if [[ $? -eq 0 ]]; then
+  diff() {
+    git diff --no-index --color-words "$@"
+  }
+fi
 
 complete -A hostname rsh rcp telnet rlogin r ftp ping disk
 complete -A export printenv

@@ -2,6 +2,8 @@
 	name = Jordan McCoy
 	email = mccoy.jordan@gmail.com
     editor = vim
+[core]
+    excludesfile = ~/.gitignore
 [color]
     pager = true
     ui = auto
