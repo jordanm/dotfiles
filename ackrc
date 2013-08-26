@@ -1,0 +1,4 @@
+--ignore-file=is:.gitignore
+--ignore-dir=.project
+--smart-case
+--sort-files
