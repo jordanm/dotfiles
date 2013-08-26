@@ -32,7 +32,6 @@ shopt -s no_empty_cmd_completion
 shopt -s nocaseglob
 
 alias ..='cd ..'
-alias --='cd -'
 alias c='clear'
 alias df='df -kTh'
 alias ds='du -h --max-depth=1'

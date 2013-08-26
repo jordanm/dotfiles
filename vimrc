@@ -243,6 +243,12 @@ function! RenameFile()
     endif
 endfunction
 
+" strip all trailing whitespace
+noremap <leader>ss :call StripWhitespace()<cr>
+function! StripWhitespace()
+    exec ':%s/ \+$//gc'
+endfunction
+
 syntax on
 hi Comment          ctermfg=Grey
 hi Constant         ctermfg=DarkGrey
