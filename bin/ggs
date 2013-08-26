@@ -1,8 +1,8 @@
 #!/bin/bash
-BR="\033[1;34m"
-NR="\033[0;34m"
-BB="\033[1;33m"
-NB="\033[0;33m"
+BR="\033[1;31m"
+NR="\033[0;31m"
+BB="\033[1;34m"
+NB="\033[0;34m"
 RS="\033[0m"
 
 for dir in $(ls -1 --color=no $PROJECTPATH); do

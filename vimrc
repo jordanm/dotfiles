@@ -251,23 +251,23 @@ endfunction
 
 syntax on
 hi Comment          ctermfg=Grey
-hi Constant         ctermfg=DarkGrey
-hi Define           ctermfg=DarkGreen
+hi Constant         ctermfg=DarkGrey cterm=none
+hi Define           ctermfg=DarkGreen cterm=none
 hi Error            ctermfg=Green
 hi IncSearch        ctermfg=White ctermbg=Cyan cterm=none
-hi Identifier       ctermfg=LightCyan
-hi Label            ctermfg=DarkGreen
+hi Identifier       ctermfg=Blue cterm=none
+hi Label            ctermfg=DarkGreen cterm=none
 hi LineNr           ctermfg=Grey
 hi MoreMsg          ctermfg=DarkCyan
 hi Number           ctermfg=DarkGrey
 hi Operator         ctermfg=Grey
-hi PreProc          ctermfg=DarkGreen
+hi PreProc          ctermfg=DarkGreen cterm=none
 hi Search           ctermfg=White ctermbg=Cyan cterm=none
-hi Special          ctermfg=Green
+hi Special          ctermfg=Yellow cterm=none
 hi SpecialChar      ctermfg=Green
 hi SpecialComment   ctermfg=DarkBlue
 hi SpecialKey       ctermfg=DarkGrey
-hi Statement        ctermfg=Green
+hi Statement        ctermfg=Green cterm=none
 hi StatusLine       ctermfg=DarkCyan cterm=none
 hi String           ctermfg=Grey
 hi Structure        ctermfg=DarkCyan
