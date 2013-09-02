@@ -4,6 +4,8 @@
     editor = vim
 [core]
     excludesfile = ~/.gitignore
+[push]
+    default = current
 [color]
     pager = true
     ui = auto

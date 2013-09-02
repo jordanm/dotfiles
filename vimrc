@@ -29,13 +29,13 @@ set path=.,$HOME,,
 set report=0
 set sessionoptions=buffers,curdir,folds,help,resize,slash,tabpages,unix,winpos,winsize
 set shiftwidth=4
+set shortmess=filnxTtoOsI
 set showcmd
 set showfulltag
 set showmatch
 set showmode
 set smartcase
 set smarttab
-set shortmess=filnxTtoOsI
 set splitbelow
 set statusline=%<%n:\ %1*%F%*\ %m%r%y%=%1*%l%*+%1*%v%*\ \ (%L)
 set tabstop=4
@@ -287,6 +287,8 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'
 au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
 au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
 au BufRead,BufNewFile *.txt setlocal textwidth=0
+au WinEnter * set cursorline
+au WinLeave * set nocursorline
 
 let g:pydiction_location = '/home/jrm/.vim/pydiction/complete-dict'
 let g:pyindent_open_paren = '&sw'
