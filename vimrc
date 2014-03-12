@@ -48,10 +48,16 @@ set wildmode=longest:full,full
 set wrap
 set wrapscan
 
-cmap w!! %!sudo tee > /dev/null %
+" w!!: write current buffer using sudo
+cmap w!! %!sudo tee >/dev/null %
+
+" <cr>: clear highlighted search term
 nnoremap <silent> <cr> :noh<cr><cr>
+
+" maintain selection in visual mode when using shift operators
 vnoremap < <gv
 vnoremap > >gv
+
 vnoremap <bs> d
 
 " ,cd: change to directory of current buffer
@@ -61,12 +67,32 @@ nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
 nnoremap <silent> <leader>cu :cd ..<cr>:pwd<cr>
 
 " ,pw: show working directory
-noremap <silent> <leader>pw :pwd<cr>
+nnoremap <silent> <leader>pw :pwd<cr>
 
-" general mappings
-noremap <silent> <leader>mm :marks<cr>
-noremap <silent> <leader>rg :reg<cr>
-inoremap <silent> <s-tab> <c-x><c-o>
+" ,mm: show all marks
+nnoremap <silent> <leader>mm :marks<cr>
+
+" ,rg: show all registers
+nnoremap <silent> <leader>rg :reg<cr>
+
+" shift-tab: attempt completion
+inoremap <silent> <s-tab> <c-n>
+
+" ,j: scroll down half a page
+noremap <silent> <leader>j <c-d>
+
+" ,k: scroll up half a page
+noremap <silent> <leader>k <c-u>
+
+" ,qa: close all buffers and quit
+noremap <silent> <leader>qa :qa<cr>
+
+" ,fq: force quit
+noremap <silent> <leader>fq :qa!<cr>
+
+" <F2>: update current buffer
+noremap <silent> <F2> :update<cr>
+
 
 " file mappings
 noremap <silent> <leader>qa :qa<cr>                     ",qa: close all buffers and quit
@@ -88,6 +114,10 @@ noremap <silent> <F12> :tabnext<cr>
 noremap <silent> <m-]> :tabnext<cr>
 
 " window mappings
+noremap <silent> <leader>wc <c-w>c                  ",wc: close current window
+noremap <silent> <leader>we <c-w>l                  ",we: move to right window
+
+
 noremap <silent> <leader>wc <c-w>c " close current window
 noremap <silent> <leader>we <c-w>l " move to right window
 noremap <silent> <leader>wq <c-w>h " move to left window
@@ -287,8 +317,6 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'
 au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
 au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
 au BufRead,BufNewFile *.txt setlocal textwidth=0
-au WinEnter * set cursorline
-au WinLeave * set nocursorline
 
 let g:pydiction_location = '/home/jrm/.vim/pydiction/complete-dict'
 let g:pyindent_open_paren = '&sw'

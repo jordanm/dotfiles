@@ -45,7 +45,7 @@ alias map='xargs -n1'
 alias mkdir='mkdir -pv'
 alias pytree='tree --dirsfirst -P "*.py" -I "__init__.py"'
 alias q='exit'
-alias rmpyc='find . -name *.pyc -delete'
+alias rmpyc='find . -name "*.pyc" -delete'
 alias tree='tree -l'
 
 gh() { 

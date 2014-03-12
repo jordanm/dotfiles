@@ -1,7 +1,9 @@
 set columns=280
 set guifont=lime
 set guioptions+=c
-set guioptions-=rtT
+set guioptions-=r
+set guioptions-=t
+set guioptions-=T
 set keymodel=startsel,stopsel
 set lines=90
 set mousehide
