@@ -18,6 +18,7 @@ export PATH="$path"
 export BASEPATH="$path"
 
 export BAKE_MODULES="spire.tasks mesh.tasks lattice.tasks"
+export BASELINEPATH=$HOME/.baseline
 export CDPATH=.:~/p
 export EDITOR=vim
 export ENVPATH=$HOME/.env

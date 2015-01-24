@@ -6,7 +6,7 @@ done
 
 export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 
 export PS1="\[\033]0;${PROMPTPREFIX}\w\007\]\[\033[0;34m\]${PROMPTPREFIX}\w\[\033[0;32m\]\$(__git_ps1 ' (%s)') \[\033[0m\]"
-export PROMPT_COMMAND="history -a; history -n;"
+#export PROMPT_COMMAND="history -a; history -n;"
 
 if [[ -e $HOME/.dircolors ]]; then
   eval "$(dircolors $HOME/.dircolors)"

@@ -1,0 +1,21 @@
+#!/bin/bash
+name=$1
+if [[ -z $name ]]; then
+  echo "must specify environment name, aborting"
+  exit 1
+fi
+
+if [[ -n $ENV ]]; then
+  echo "cannot run mkenv from inside an existing environment, aborting"
+  exit 1
+fi
+
+path=$ENVPATH/$name
+if [[ -d $path ]]; then
+  echo "environment $name already exists, aborting"
+  exit 1
+fi
+
+$BASELINEPATH/bin/virtualenv $path
+echo "$BASELINEPATH/bin" > $path/path
+echo "created environment $name"

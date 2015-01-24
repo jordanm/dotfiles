@@ -1,8 +1,14 @@
 #!/bin/bash
 env=${1-none}
-if [[ $env == "last" ]]; then
+if [[ $env == "_last" ]]; then
   if [[ -e $HOME/.last-environment ]]; then
     env=$(< $HOME/.last-environment)
+  else
+    env="none"
+  fi
+elif [[ $env == "_default" ]]; then
+  if [[ -e $HOME/.default-environment ]]; then
+    env=$(< $HOME/.default-environment)
   else
     env="none"
   fi
