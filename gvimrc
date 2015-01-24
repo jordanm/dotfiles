@@ -1,6 +1,8 @@
 set columns=280
-set guifont=Lucida\ Console\ 5
-set guioptions-=a
+set guifont=Lucida\ Console\ 8
+set guioptions+=c
+set guioptions-=r
+set guioptions-=t
 set guioptions-=T
 set keymodel=startsel,stopsel
 set lines=90

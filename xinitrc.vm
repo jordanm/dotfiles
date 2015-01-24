@@ -1,0 +1,13 @@
+#!/bin/sh
+xset b off
+
+if [[ -f $HOME/.Xdefaults ]]; then
+    xrdb -merge $HOME/.Xdefaults
+fi
+
+
+fbsetbg -r $HOME/.wallpapers
+ssh-agent fluxbox -log "$fluxdir/log" &
+
+fbpid=$!
+wait $fbpid

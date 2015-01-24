@@ -1,6 +1,6 @@
 [user]
-	name = Jordan McCoy
-	email = mccoy.jordan@gmail.com
+    name = Jordan McCoy
+    email = mccoy.jordan@gmail.com
     editor = vim
 [core]
     excludesfile = ~/.gitignore
