@@ -18,7 +18,7 @@ if [[ -n $name ]]; then
     if [[ -e $session ]]; then
       exec gvim -S "$session"
     else
-      exec gvim -O2
+      exec gvim
     fi
   fi
 fi

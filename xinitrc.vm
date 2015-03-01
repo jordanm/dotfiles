@@ -2,9 +2,16 @@
 xset b off
 
 if [[ -f $HOME/.Xdefaults ]]; then
-    xrdb -merge $HOME/.Xdefaults
+  xrdb -merge $HOME/.Xdefaults
 fi
 
+if [[ -f /usr/bin/VBoxClient-all ]]; then
+  /usr/bin/VBoxClient-all
+fi
+
+if [[ -d $HOME/.dropbox-dist ]]; then
+  $HOME/.dropbox-dist/dropboxd &
+fi
 
 fbsetbg -r $HOME/.wallpapers
 ssh-agent fluxbox -log "$fluxdir/log" &
