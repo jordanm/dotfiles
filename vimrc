@@ -25,7 +25,7 @@ set nowarn
 set number
 set numberwidth=3
 set pastetoggle=<F3>
-set path=.,$HOME,,
+set path=.,,
 set report=0
 set sessionoptions=buffers,curdir,folds,help,resize,slash,tabpages,unix,winpos,winsize
 set shiftwidth=4
@@ -38,9 +38,12 @@ set smartcase
 set smarttab
 set splitbelow
 set statusline=%<%n:\ %1*%F%*\ %m%r%y%=%1*%l%*+%1*%v%*\ \ (%L)
+set suffixes+=.pyc
+set suffixes+=.pyo
 set tabstop=4
 set textwidth=0
 set title
+set titlestring=[vim\ %{CountBuffers()}]\ %t%(\ %M%)
 set viminfo='20,<500,:20,s10,h,n$HOME/.viminfo
 set whichwrap=<,>,[,]
 set wildmenu
@@ -48,101 +51,75 @@ set wildmode=longest:full,full
 set wrap
 set wrapscan
 
-" w!!: write current buffer using sudo
-cmap w!! %!sudo tee >/dev/null %
+" don't allow use of the arrow keys
+noremap <up> <nop>
+inoremap <up> <nop>
+noremap <down> <nop>
+inoremap <down> <nop>
+noremap <left> <nop>
+inoremap <left> <nop>
+noremap <right> <nop>
+inoremap <right> <nop>
 
-" <cr>: clear highlighted search term
-nnoremap <silent> <cr> :noh<cr><cr>
+" basic mappings
+noremap <leader>,j J
+noremap J <c-d>
+noremap <leader>,k K
+noremap K <c-u>
 
-" maintain selection in visual mode when using shift operators
-vnoremap < <gv
-vnoremap > >gv
-
-vnoremap <bs> d
-
-" ,cd: change to directory of current buffer
-nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" ,cu: change to higher directory
-nnoremap <silent> <leader>cu :cd ..<cr>:pwd<cr>
-
-" ,pw: show working directory
-nnoremap <silent> <leader>pw :pwd<cr>
-
-" ,mm: show all marks
-nnoremap <silent> <leader>mm :marks<cr>
-
-" ,rg: show all registers
-nnoremap <silent> <leader>rg :reg<cr>
-
-" shift-tab: attempt completion
+" basic insert mode mappings
+inoremap jk <esc>
 inoremap <silent> <s-tab> <c-n>
 
-" ,j: scroll down half a page
-noremap <silent> <leader>j <c-d>
+" basic visual mode mappings
+vnoremap <bs> d
+vnoremap < <gv
+vnoremap > <gv
 
-" ,k: scroll up half a page
-noremap <silent> <leader>k <c-u>
+" general mappings
+nnoremap <silent> <leader>mm :marks<cr>                 " ,mm: show marks
+nnoremap <silent> <leader>rg :reg<cr>                   " ,rg: show registers
+noremap <silent> <F2> :update<cr>                       " F2: save current buffer
 
-" ,qa: close all buffers and quit
-noremap <silent> <leader>qa :qa<cr>
-
-" ,fq: force quit
-noremap <silent> <leader>fq :qa!<cr>
-
-" <F2>: update current buffer
-noremap <silent> <F2> :update<cr>
-
-
-" file mappings
-noremap <silent> <leader>qa :qa<cr>                     ",qa: close all buffers and quit
-noremap <silent> <leader>fq :qa!<cr>                    ",fq: force quit
-noremap <silent> <leader>fu :update!<cr>                ",fu: force update of current buffer
-noremap <silent> <leader>fw :wq!<cr>
-
-" tab mappings
-noremap <silent> <leader>tt :tabnew<cr>
-noremap <silent> <leader>te :browse tabe<cr>
-noremap <silent> <leader>tc :tabclose<cr>
-noremap <silent> <leader>ty :tabnext<cr>
-noremap <silent> <leader>tr :tabprevious<cr>
-noremap <silent> <leader>tf :tabfirst<cr>
-noremap <silent> <leader>tl :tablast<cr>
-noremap <silent> <leader>th :tab help<cr>
-noremap <silent> <F11> :tabprevious<cr>
-noremap <silent> <F12> :tabnext<cr>
-noremap <silent> <m-]> :tabnext<cr>
+" file and path mappings
+nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>      " ,cd: change to directory of current buffer
+nnoremap <silent> <leader>cu :cd ..<cr>:pwd<cr>         " ,cu: change to higher directory
+nnoremap <silent> <leader>pw :pwd<cr>                   " ,pw: show current directory
+nnoremap <silent> <leader>qa :qa<cr>                    " ,qa: close all buffers and quit
+nnoremap <silent> <leader>fq :qa!<cr>                   " ,fq: force quit
 
 " window mappings
-noremap <silent> <leader>wc <c-w>c                  ",wc: close current window
-noremap <silent> <leader>we <c-w>l                  ",we: move to right window
-
-
-noremap <silent> <leader>wc <c-w>c " close current window
-noremap <silent> <leader>we <c-w>l " move to right window
-noremap <silent> <leader>wq <c-w>h " move to left window
-noremap <silent> <leader>wd <c-w>j " move to below window
-noremap <silent> <leader>w2 <c-w>k " move to above window
-noremap <silent> <leader>wt <c-w>t " move to top-left window
-noremap <silent> <leader>wb <c-w>b " move to bottom-right window
-noremap <silent> <leader>ww <c-w>p " move to previous window
-noremap <silent> <leader>wr <c-w>r " rotate windows down/right
-noremap <silent> <leader>wn <c-w>n " create new horizontal window
-noremap <silent> <leader>wo <c-w>o " close all other windows
-noremap <silent> <leader>w= <c-w>= " resize windows equally
-noremap <silent> <leader>ws :split<cr>
-noremap <silent> <leader>wv :vsplit<cr>
+nnoremap <silent> <leader>wc <c-w>c                     " ,wc: close current window
+nnoremap <silent> <leader>we <c-w>l                     " ,we: move to right window
+nnoremap <silent> <leader>wq <c-w>h                     " ,wq: move to left window
+nnoremap <silent> <leader>wd <c-w>j                     " ,wd: move to below window
+nnoremap <silent> <leader>w2 <c-w>k                     " ,w2: move to above window
+nnoremap <silent> <leader>wt <c-w>t                     " ,wt: move to top-left window
+nnoremap <silent> <leader>wb <c-w>b                     " ,wb: move to bottom-right window
+nnoremap <silent> <leader>ww <c-w>p                     " ,ww: move to previous window
+nnoremap <silent> <leader>wr <c-w>r                     " ,wr: rotate windows down/right
+nnoremap <silent> <leader>wn <c-w>n                     " ,wn: create new horizontal window
+nnoremap <silent> <leader>wo <c-w>o                     " ,wo: close all other windows
+nnoremap <silent> <leader>w= <c-w>=                     " ,w=: resize windows equally
+nnoremap <silent> <leader>ws :split<cr>                 " ,ws: split window horizontally
+nnoremap <silent> <leader>wv :vsplit<cr>                " ,wv: split window vertically
 
 " buffer mappings
-noremap <silent> <leader>ba :ball<cr>
-noremap <silent> <leader>bb :buffers<cr>
-noremap <silent> <leader>bc :bdelete<cr>
-noremap <silent> <leader>bn :bnext<cr>
-noremap <silent> <leader>bv :bprevious<cr>
-noremap <silent> <leader>bm :bmod<cr>
+nnoremap <silent> <leader>bb :buffers<cr>               " ,bb: list all buffers
+nnoremap <silent> <leader>bc :bdelete<cr>               " ,bc: close buffer
+nnoremap <silent> <leader>bn :bnext<cr>                 " ,bn: go to next buffer
+nnoremap <silent> <leader>bv :bprevious<cr>             " ,bv: go to previous buffer
+nnoremap <silent> <leader>bm :bmod<cr>                  " ,bm: go to next modified buffer
 
 " format mappings
-noremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
+nnoremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
+
+command! -nargs=1 -complete=file_in_path F find **/<args>
+
+" counts the number of open buffers
+function! CountBuffers()
+    return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+endfunction
 
 function s:Kwbd(kwbdStage)
     if(a:kwbdStage == 1)
@@ -310,23 +287,17 @@ hi Type             ctermfg=DarkCyan
 hi User1            ctermfg=LightCyan
 
 filetype plugin indent on
-au filetype * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-au filetype css,less,html,htmldjango,mako,scss,sh,xhtml,xml,yaml setlocal sw=2 ts=2
-au filetype javascript setlocal smartindent nocindent
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
-au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
-au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
-au BufRead,BufNewFile *.txt setlocal textwidth=0
-
-let g:pydiction_location = '/home/jrm/.vim/pydiction/complete-dict'
-let g:pyindent_open_paren = '&sw'
-let g:pyindent_continue = '&sw'
-
-let g:ctrlp_map = ',ff'
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 2
-let g:ctrlp_root_markers = ['.root-marker']
-let g:ctrlp_dotfiles = 0
+augroup autocommands
+    au!
+    au filetype * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    au filetype css,less,html,htmldjango,mako,scss,sh,xhtml,xml,yaml setlocal sw=2 ts=2
+    au filetype javascript setlocal smartindent nocindent
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
+    au BufRead,BufNewFile Bakefile,bakefile setlocal filetype=python
+    au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
+    au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
+    au BufRead,BufNewFile *.txt setlocal textwidth=0
+augroup end
 
 function! ResetSession()
     let l:last = bufnr('$')
@@ -348,8 +319,10 @@ function! ResetSession()
 endfunction
 
 function! LoadProject()
-    let g:pdir = finddir('.project', '.;')
-    if strlen(g:pdir) > 0
+    let l:pdir = finddir('.project', '.;')
+    if strlen(l:pdir) > 0
+        let g:pdir = fnamemodify(l:pdir, ':p')
+        let g:proot = simplify(g:pdir . '/..')
         let l:pfile = findfile('project.vim', g:pdir)
         if strlen(l:pfile) > 0
             silent exec 'source ' . l:pfile
@@ -358,9 +331,29 @@ function! LoadProject()
         if strlen(l:tagsfile) > 0
             silent exec 'set tags=' . l:tagsfile
         endif
+        exec 'set titlestring=%([' . $PROJECTNAME . '\ %{CountBuffers()}]\ %)%t%(\ %M%)'
+        silent exec 'set path+=' . getcwd()
     endif
 endfunction
 call LoadProject()
+
+function! EditPythonFile(name)
+    let l:target = findfile(a:name . '.py', g:proot . '/**')
+    if strlen(l:target) > 0
+        exec ":edit " . l:target
+    endif
+endfunction
+
+command! -nargs=1 -complete=file_in_path FP call EditPythonFile(<f-args>)
+
+function! EditPythonTestFile(name)
+    let l:target = findfile('test_' . a:name . '.py', g:proot . '/**')
+    if strlen(l:target) > 0
+        exec ":edit " . l:target
+    endif
+endfunction
+
+command! -nargs=1 FT call EditPythonTestFile(<f-args>)
 
 function! GenerateProjectTags()
     if strlen(g:pdir) > 0
@@ -391,8 +384,6 @@ function! SaveProjectSession(quit)
 endfunction
 
 noremap <silent> <leader>gt :call GenerateProjectTags()<cr>
-noremap <silent> <leader>sb :call InvokeProjectScript('bounce.sh')<cr>
-noremap <silent> <leader>sp :call InvokeProjectScript('sync.sh')<cr>
 noremap <silent> <leader>ss :call SaveProjectSession(0)<cr>
 noremap <silent> <leader>sc :call SaveProjectSession(1)<cr>
 noremap <silent> <leader>sr :call ResetSession()<cr>

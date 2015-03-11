@@ -16,9 +16,9 @@ if [[ -n $name ]]; then
     echo $name > $HOME/.last-project
     session=$path/.project/session.vim
     if [[ -e $session ]]; then
-      exec gvim -S "$session"
+      PROJECTNAME=$name exec gvim -S "$session"
     else
-      exec gvim
+      PROJECTNAME=$name exec gvim
     fi
   fi
 fi
