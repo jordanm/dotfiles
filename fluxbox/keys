@@ -45,7 +45,6 @@ mod4 shift Right :movetabright
 #mod4 w mod4 a :togglecmd {showdesktop} {deiconify all originquiet}
 #mod4 w mod4 b :toggledecor
 #mod4 w mod4 d :macrocmd {detachclient} {move 20 20}
-#mod4 w mod4 f :maximize
 #mod4 w mod4 h :maximizehorizontal
 #mod4 w mod4 k :stick
 #mod4 w mod4 l :foreach {macrocmd {raise} {focus}} {matches (class=[current])}
@@ -62,21 +61,13 @@ mod4 o mod4 d :showdesktop
 mod4 o mod4 f :fullscreen
 mod4 o mod4 m :maximize
 mod4 o mod4 n :minimize
-mod4 o mod4 i :if {matches (lilyterm)} {moveto 5% 0 left} {macrocmd {resizeto 956 1064} {moveto 0 0 topleft}}
-mod4 o mod4 o :if {matches (lilyterm)} {moveto 0 0 center} {macrocmd {resizeto 1490 840} {moveto 0 0 center}}
-mod4 o mod4 l :macrocmd {resizeto 75% 100%} {moveto 0 0 topright}
-mod4 o mod4 p :if {matches (lilyterm)} {moveto 5% 0 right} {macrocmd {resizeto 956 1064} {moveto 0 0 topright}}
-
-# window moving keymode
-#mod4 w mod4 m :keymode movemode
-#movemode: None Up :moveup 2
-#movemode: None Down :movedown 2
-#movemode: None Left :moveleft 2
-#movemode: None Right :moveright 2
-#movemode: Shift Up :moveup 10
-#movemode: Shift Down :movedown 10
-#movemode: Shift Left :moveleft 10
-#movemode: Shift Right :moveright 10
+mod4 o mod4 8 :moveto 1% 1% topleft
+mod4 o mod4 i :if {matches (gvim)} {macrocmd {moveto 1% 2% topleft}} {moveto 1% 0 left}
+mod4 o mod4 k :moveto 1% 1% bottomleft
+mod4 o mod4 o :if {matches (gvim)} {macrocmd {moveto 0 0 center}} {moveto 0 0 center}
+mod4 o mod4 0 :moveto 1% 1% topright
+mod4 o mod4 p :if {matches (gvim)} {macrocmd {moveto 1% 2% topright}} {moveto 1% 0 right}
+mod4 o mod4 semicolon :moveto 1% 1% bottomright
 
 # workspace bindings
 mod1 F1 :workspace 1
@@ -105,21 +96,20 @@ mod4 ctrl q :kill
 mod4 w :clientmenu (workspace=[current])
 
 # terminal bindings
-mod4 Return :if {some and {matches (lilyterm) (title!=console)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (lilyterm) (title!=console)} {exec start-terminal}
+mod4 Return :if {some matches (lilyterm) (title!=console) (workspace=[current])} {nextwindow (lilyterm) (title!=console) (workspace=[current])} {exec start-terminal}
 mod4 apostrophe :exec start-terminal
 mod4 backslash :exec start-environment-terminal
-mod4 bracketright :exec start-terminal last
-mod4 grave :exec toggle-console
+mod4 bracketleft :exec start-terminal _default
+mod4 bracketright :exec start-terminal _last
 
 # gvim bindings
-mod4 space :if {some matches (gvim)} {nextwindow (workspace=[current]) (gvim)} {exec gvim}
+mod4 space :if {some matches (gvim) (workspace=[current])} {nextwindow (gvim) (workspace=[current])} {exec gvim}
 mod4 v :exec gvim
 mod4 p :exec launch-project
 
 # application bindings
-mod4 c :if {some and {matches (google-chrome)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (google-chrome)} {exec google-chrome}
-mod4 f :if {some and {matches (Navigator)} {matches (workspace=[current])}} {nextwindow (workspace=[current]) (Navigator)} {exec firefox}
-mod4 n :if {some matches (Lotus Notes)} {activate (Lotus Notes)} {exec ibm-notes8}
-mod4 s :if {some matches (skype.bin) (role=ConversationsWindow)} {activate (skype.bin) (role=ConversationsWindow)} {if {some matches (skype.bin) (role=MainWindow)} {activate (skype.bin) (role=MainWindow)} {exec skype}}}
+mod4 c :if {some matches (Chromium) (workspace=[current])} {nextwindow (Chromium) (workspace=[current])} {exec chromium}
+mod4 f :if {some matches (Navigator) (workspace=[current])} {nextwindow (Navigator) (workspace=[current])} {exec firefox}
+mod4 k :if {some matches (.*[.]slack[.]com__messages) (workspace=[current])} {activate (.*[.]slack[.]com__messages) (workspace=[current])} {exec slack}
+mod4 s :if {some matches (skype) (role=ConversationsWindow)} {activate (skype) (role=ConversationsWindow)} {if {some matches (skype)} {activate (skype)} {exec secured-skype}}}
 mod4 Print :exec fbsetbg -r $HOME/.wallpapers
-mod4 l :exec $HOME/.fluxbox/lock-screen

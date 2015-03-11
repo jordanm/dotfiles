@@ -16,6 +16,18 @@
   [iconhidden] {yes}
   [sticky] {yes}
 [end]
-[app] (agnclient)
-  [workspace] {2}
+[app] (skype) (title=mccoy.jordan - Skype™)
+  [dimensions] {340 1000}
+  [position] (topright) {0 100}
+  [iconhidden] {yes}
+  [sticky] {yes}
+  [deco] {border}
+[end]
+[app] (skype) (role=ConversationsWindow)
+  [dimensions] {1000 800}
+  [position] (center) {0 0}
+[end]
+[app] (.*[.]slack[.]com__messages) (class=Chromium)
+  [dimensions] {1100 1540}
+  [position] (topleft) {30 30}
 [end]
