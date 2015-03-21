@@ -299,6 +299,9 @@ augroup autocommands
     au BufRead,BufNewFile *.txt setlocal textwidth=0
 augroup end
 
+let g:pyindent_open_paren = '&sw'
+let g:pyindent_continue = '&sw'
+
 function! ResetSession()
     let l:last = bufnr('$')
     let l:n = 1
@@ -332,28 +335,57 @@ function! LoadProject()
             silent exec 'set tags=' . l:tagsfile
         endif
         exec 'set titlestring=%([' . $PROJECTNAME . '\ %{CountBuffers()}]\ %)%t%(\ %M%)'
-        silent exec 'set path+=' . getcwd()
+        silent exec 'set path=' . getcwd() . '/**,' . &path
     endif
 endfunction
 call LoadProject()
 
-function! EditPythonFile(name)
-    let l:target = findfile(a:name . '.py', g:proot . '/**')
-    if strlen(l:target) > 0
-        exec ":edit " . l:target
+let g:default_project_extensions = ['py', 'rst']
+
+function! EditProjectFile(name, split)
+    let l:ext = fnamemodify(a:name, ':e')
+    if strlen(l:ext) > 0
+        let l:candidate = findfile(a:name, g:proot . '/**')
+    else
+        for l:ext in g:default_project_extensions
+            let l:candidate = findfile(a:name . '.' . l:ext, g:proot . '/**')
+            if strlen(l:candidate) > 0
+                break
+            endif
+        endfor
+    endif
+    if strlen(l:candidate) > 0
+        if a:split
+            exec ":split " . l:candidate
+        else
+            exec ":edit " . l:candidate
+        endif
     endif
 endfunction
 
-command! -nargs=1 -complete=file_in_path FP call EditPythonFile(<f-args>)
+command! -nargs=1 -complete=file_in_path FP call EditProjectFile(<f-args>, 0)
+command! -nargs=1 -complete=file_in_path FS call EditProjectFile(<f-args>, 1)
 
-function! EditPythonTestFile(name)
-    let l:target = findfile('test_' . a:name . '.py', g:proot . '/**')
+function! EditTestFile(name, split)
+    let l:target = a:name
+    if strpart(l:target, 0, 5) != 'test_'
+        let l:target = 'test_' . l:target
+    endif
+    if fnamemodify(l:target, ':e') != 'py'
+        let l:target = l:target . '.py'
+    endif
+    let l:target = findfile(l:target, g:proot . '/**')
+    echo l:target
     if strlen(l:target) > 0
-        exec ":edit " . l:target
+        if a:split
+            exec ":split " . l:target
+        else
+            exec ":edit " . l:target
+        endif
     endif
 endfunction
 
-command! -nargs=1 FT call EditPythonTestFile(<f-args>)
+command! -nargs=1 -complete=file_in_path FT call EditTestFile(<f-args>, 0)
 
 function! GenerateProjectTags()
     if strlen(g:pdir) > 0
