@@ -31,3 +31,7 @@
   [dimensions] {1100 1540}
   [position] (topleft) {30 30}
 [end]
+[app] (en.todoist.com__app) (class=Chromium)
+  [dimensions] {1020 1400}
+  [position] (topleft) {60 60}
+[end]

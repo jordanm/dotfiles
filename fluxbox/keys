@@ -110,6 +110,7 @@ mod4 p :exec launch-project
 # application bindings
 mod4 c :if {some matches (Chromium) (workspace=[current])} {nextwindow (Chromium) (workspace=[current])} {exec chromium}
 mod4 f :if {some matches (Navigator) (workspace=[current])} {nextwindow (Navigator) (workspace=[current])} {exec firefox}
-mod4 k :if {some matches (.*[.]slack[.]com__messages) (workspace=[current])} {activate (.*[.]slack[.]com__messages) (workspace=[current])} {exec slack}
+mod4 k :if {some matches (.*[.]slack[.]com__messages)} {activate (.*[.]slack[.]com__messages)} {exec slack}
+mod4 t :if {some matches (en.todoist.com__app)} {activate (en.todoist.com__app)} {exec todoist}
 mod4 s :if {some matches (skype) (role=ConversationsWindow)} {activate (skype) (role=ConversationsWindow)} {if {some matches (skype)} {activate (skype)} {exec secured-skype}}}
 mod4 Print :exec fbsetbg -r $HOME/.wallpapers

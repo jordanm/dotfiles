@@ -34,6 +34,7 @@ shopt -s nocaseglob
 alias ..='cd ..'
 alias c='clear'
 alias df='df -kTh'
+alias dkt='sudo docker'
 alias ds='du -h --max-depth=1'
 alias du='du -h'
 alias g='git'
