@@ -51,6 +51,24 @@ set wildmode=longest:full,full
 set wrap
 set wrapscan
 
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'rking/ag.vim'
+Plugin 'wellle/targets.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'sgur/ctrlp-extensions.vim'
+Plugin 'mattn/ctrlp-mark'
+Plugin 'terryma/vim-expand-region'
+Plugin 'matze/vim-move'
+"Plugin 'airblade/vim-gitgutter'
+
+call vundle#end()
+filetype plugin indent on
+
 " don't allow use of the arrow keys
 noremap <up> <nop>
 inoremap <up> <nop>
@@ -74,7 +92,7 @@ inoremap <silent> <s-tab> <c-n>
 " basic visual mode mappings
 vnoremap <bs> d
 vnoremap < <gv
-vnoremap > <gv
+vnoremap > >gv
 
 " general mappings
 nnoremap <silent> <leader>mm :marks<cr>                 " ,mm: show marks
@@ -111,6 +129,18 @@ nnoremap <silent> <leader>bn :bnext<cr>                 " ,bn: go to next buffer
 nnoremap <silent> <leader>bv :bprevious<cr>             " ,bv: go to previous buffer
 nnoremap <silent> <leader>bm :bmod<cr>                  " ,bm: go to next modified buffer
 
+" ctrlp configuration
+let g:ctrlp_funky_syntax_highlight = 1
+let g:ctrlp_root_markers = ['.project']
+
+" ctrlp mappings
+nnoremap <silent> <leader>fb :CtrlPBuffer()
+nnoremap <silent> <leader>ff :CtrlPMixed<cr>
+nnoremap <silent> <leader>fn :CtrlPFunky<cr>
+nnoremap <silent> <leader>fs :exec 'CtrlPFunky ' . expand('<cword>')<cr>
+nnoremap <silent> <leader>fy :CtrlPYankring<cr>
+nnoremap <silent> <leader>fm :CtrlPMark<cr>
+
 " format mappings
 nnoremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
 
@@ -121,6 +151,7 @@ function! CountBuffers()
     return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
 endfunction
 
+" properly deletes the buffer, depending on context
 function s:Kwbd(kwbdStage)
     if(a:kwbdStage == 1)
         if(!buflisted(winbufnr(0)))
@@ -286,7 +317,6 @@ hi Todo             ctermfg=DarkCyan
 hi Type             ctermfg=DarkCyan
 hi User1            ctermfg=LightCyan
 
-filetype plugin indent on
 augroup autocommands
     au!
     au filetype * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
