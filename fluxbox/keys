@@ -89,7 +89,7 @@ mod4 F8 :taketoworkspace 8
 
 # fluxbox bindings
 mod4 slash :rootmenu
-#mod4 grave :exec fbrun -font "silkscreen-6" -w 200 -pos 620 440
+mod4 grave :exec fbrun -font "Lucida Console-9" -w 400 -fg white -bg black
 mod4 r :reconfigure
 mod4 q :close
 mod4 ctrl q :kill
@@ -114,3 +114,6 @@ mod4 k :if {some matches (.*[.]slack[.]com__messages)} {activate (.*[.]slack[.]c
 mod4 t :if {some matches (en.todoist.com__app)} {activate (en.todoist.com__app)} {exec todoist}
 mod4 s :if {some matches (skype) (role=ConversationsWindow)} {activate (skype) (role=ConversationsWindow)} {if {some matches (skype)} {activate (skype)} {exec secured-skype}}}
 mod4 Print :exec fbsetbg -r $HOME/.wallpapers
+
+# help bindings
+mod4 h mod4 v :if {some matches (.*vimref.html.*)} {close (.*vimref.html.*)} {exec showhelp vim}

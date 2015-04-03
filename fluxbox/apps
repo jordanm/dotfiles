@@ -1,6 +1,7 @@
 [app] (fbrun)
   [position] (WINCENTER) {0 0}
   [layer] {2}
+  [deco] {border}
 [end]
 [app] (gvim)
   [position] (CENTER) {0 0}
@@ -21,7 +22,7 @@
   [position] (topright) {0 100}
   [iconhidden] {yes}
   [sticky] {yes}
-  [deco] {border}
+  [deco] {tiny}
 [end]
 [app] (skype) (role=ConversationsWindow)
   [dimensions] {1000 800}
@@ -34,4 +35,8 @@
 [app] (en.todoist.com__app) (class=Chromium)
   [dimensions] {1020 1400}
   [position] (topleft) {60 60}
+[end]
+[app] (.*ref.html.*) (class=Chromium)
+  [dimensions] {1300 1540}
+  [position] (topleft) {30 30}
 [end]

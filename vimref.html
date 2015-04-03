@@ -1,0 +1,254 @@
+<html>
+<head>
+
+  <title>VIM Reference</title>
+  <style>
+    body {
+      -webkit-column-count: 3;
+      -webkit-column-gap: 50px;
+      -webkit-column-rule: solid 1px #bbb;
+      background-color: #333;
+      color: #fff;
+      font: 14px Lato;
+      margin: 20px;
+    }
+    div {
+      -webkit-column-break-inside: avoid;
+    }
+    h1 {
+      font: 14px Lato;
+      font-weight: bold;
+      font-style: italic;
+      text-decoration: underline;
+      margin: 0;
+    }
+    dl {
+      margin: 0 0 30px 0;
+    }
+    dt {
+      float: left;
+    }
+    dd {
+      margin-left: 60px;
+    }
+    dt:nth-of-type(even), dd:nth-of-type(even) {
+      color: #ccc;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div>
+    <h1>General</h1>
+    <dl>
+      <dt>jk</dt><dd>exit mode</dd>
+      <dt>ZZ</dt><dd>write current file and close</dd>
+      <dt>ZQ</dt><dd>quit without checking for changes</dd>
+      <dt>shift-tab</dt><dd>begin completion</dd>
+      <dt>U</dt><dd>restore last changed line</dd>
+      <dt>=</dt><dd>=</dd>
+      <dt>=</dt><dd>=</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Inserting</h1>
+    <dl>
+      <dt>A</dt><dd>insert text at end of line</dd>
+      <dt>I</dt><dd>insert text before first non-blank character</dd>
+      <dt>gI</dt><dd>insert text at start of line</dd>
+      <dt>gi</dt><dd>continue inserting text from last spot</dd>
+      <dt>:r</dt><dd>insert named file below cursor</dd>
+      <dt>:0r</dt><dd>insert named file at top</dd>
+      <dt>:r!</dt><dd>execute cmd and insert below cursor</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Basic Motions</h1>
+    <dl>
+      <dt>w</dt><dd>move to start of next word</dd>
+      <dt>b</dt><dd>move to start of previous word</dd>
+      <dt>e</dt><dd>move to end of next word</dd>
+      <dt>ge</dt><dd>move to end of previous word</dd>
+      <dt>$</dt><dd>move to end of line</dd>
+      <dt>0</dt><dd>move to start of line</dd>
+      <dt>^</dt><dd>move to first non-block char of line</dd>
+      <dt>gg</dt><dd>move to start of file</dd>
+      <dt>G</dt><dd>move to end of file (or with count, to line)</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Search Motions</h1>
+    <dl>
+      <dt>f</dt><dd>move forward to character</dd>
+      <dt>F</dt><dd>move back to character</dd>
+      <dt>t</dt><dd>move forward to right before character</dd>
+      <dt>T</dt><dd>move back to right before character</dd>
+      <dt>%</dt><dd>move to matching paren/brace/bracket</dd>
+      <dt>*</dt><dd>search forward for word under cursor</dd>
+      <dt>#</dt><dd>search backword for word under cursor</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Other Motions</h1>
+    <dl>
+      <dt>H</dt><dd>move to first visible line</dd>
+      <dt>M</dt><dd>move to middle visible line</dd>
+      <dt>L</dt><dd>move to last visible line</dd>
+      <dt>|</dt><dd>move to screen column [count] in line</dd>
+      <dt>-</dt><dd>move up, with cursor on first non-blank char</dd>
+      <dt>+</dt><dd>move down, with cursor on first non-blank char</dd>
+      <dt>]]</dt><dd>move to next section</dd>
+      <dt>[[</dt><dd>move to previous section</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Scrolling</h1>
+    <dl>
+      <dt>J</dt><dd>scroll down</dd>
+      <dt>K</dt><dd>scroll up</dd>
+      <dt>zz</dt><dd>scroll so that cursor line is centered</dd>
+      <dt>zt</dt><dd>scroll so that cursor line is first line</dd>
+      <dt>zb</dt><dd>scroll so that cursor line is last line</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Operators</h1>
+    <dl>
+      <dt>c</dt><dd>change text</dd>
+      <dt>C</dt><dd>change text to end of line</dd>
+      <dt>d</dt><dd>delete text</dd>
+      <dt>dd</dt><dd>delete current line</dd>
+      <dt>D</dt><dd>delete text to end of line</dd>
+      <dt>s</dt><dd>change character</dd>
+      <dt>S</dt><dd>change entire line</dd>
+      <dt>gc</dt><dd>comment/uncomment</dd>
+      <dt>~</dt><dd>swap case</dd>
+      <dt>gu</dt><dd>make text lowercase</dd>
+      <dt>gU</dt><dd>make text uppercase</dd>
+      <dt>&lt;</dt><dd>shift text left</dd>
+      <dt>&gt;</dt><dd>shift text right</dd>
+      <dt>!</dt><dd>filter text through external command</dd>
+      <dt>gq</dt><dd>format text to textwidth length</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Copy & Paste</h1>
+    <dl>
+      <dt>y</dt><dd>yank text</dd>
+      <dt>yy</dt><dd>yank current line</dd>
+      <dt>Y</dt><dd>copy text from cursor to end of line</dd>
+      <dt>m</dt><dd>cut text</dd>
+      <dt>mm</dt><dd>cut current line</dd>
+      <dt>p</dt><dd>paste from register, after cursor/line</dd>
+      <dt>P</dt><dd>paste from register, before cursor/line</dd>
+      <dt>gp</dt><dd>same as p, but maintain cursor position</dd>
+      <dt>gP</dt><dd>same as P, but maintain cursor position</dd>
+      <dt>ctrl-p</dt><dd>rotate previous paste forward in yank buffer</dd>
+      <dt>ctrl-n</dt><dd>rotate previous paste backward in yank buffer</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Text Objects</h1>
+    <dl>
+      <dt>aw, iw</dt><dd>select a word</dd>
+      <dt>aW, iW</dt><dd>select a WORD</dd>
+      <dt>as, is</dt><dd>select a sentence</dd>
+      <dt>ab, ib</dt><dd>select inside parens</dd>
+      <dt>aB, iB</dt><dd>select inside braces</dd>
+      <dt>a[, i[</dt><dd>select inside brackets</dd>
+      <dt>a&lt;, i&lt;</dt><dd>select inside angle brackets</dd>
+      <dt>a', i'</dt><dd>select inside single-quotes</dd>
+      <dt>a", i"</dt><dd>select inside double quotes</dd>
+      <dt>a$, i$</dt><dd>select inside separator (,.;:+-=_|$)</dd>
+      <dt>aa, ia</dt><dd>select an argument</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Insert Mode</h1>
+    <dl>
+      <dt>ctrl-r</dt><dd>insert content of register</dd>
+      <dt>ctrl-t</dt><dd>indent one shiftwidth at start of line</dd>
+      <dt>ctrl-d</dt><dd>remove one shiftwidth at start of line</dd>
+      <dt>ctrl-e</dt><dd>insert the character below the cursor</dd>
+      <dt>ctrl-y</dt><dd>insert the character above the cursor</dd>
+      <dt>ctrl-w</dt><dd>delete word before the cursor</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Visual Mode</h1>
+    <dl>
+      <dt>v</dt><dd>start visual mode per character</dd>
+      <dt>V</dt><dd>start visual mode linewise</dd>
+      <dt>ctrl-v</dt><dd>start visual mode blockwise</dd>
+      <dt>gv</dt><dd>start visual mode with previous area/mode</dd>
+      <dt>o</dt><dd>go to other end of highlighted text</dd>
+      <dt>alt-k</dt><dd>move current line/selection up</dd>
+      <dt>alt-j</dt><dd>move current line/selection down</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Windows</h1>
+    <dl>
+      <dt>,wc</dt><dd>close current window</dd>
+      <dt>,we</dt><dd>move to right window</dd>
+      <dt>,wq</dt><dd>move to left window</dd>
+      <dt>,wd</dt><dd>move to window below</dd>
+      <dt>,w2</dt><dd>move to window above</dd>
+      <dt>,wt</dt><dd>move to top/left window</dd>
+      <dt>,wb</dt><dd>move to bottom/right window</dd>
+      <dt>,ww</dt><dd>move to previous window</dd>
+      <dt>,wr</dt><dd>rotate windows down/right</dd>
+      <dt>,wx</dt><dd>exchange window with next window<dd>
+      <dt>,wn</dt><dd>create new horizontal window</dd>
+      <dt>,wo</dt><dd>close all other windows</dd>
+      <dt>,w=</dt><dd>resize windows equally</dd>
+      <dt>,ws</dt><dd>split window horizontally</dd>
+      <dt>,wv</dt><dd>split window vertically</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Ctrl-P</h1>
+    <dl>
+      <dt>,ff</dt><dd>find in files/buffers</dd>
+      <dt>,fn</dt><dd>find functions</dd>
+      <dt>,fb</dt><dd>find in buffers</dd>
+      <dt>,fy</dt><dd>fine in yank ring</dd>
+      <dt>,fm</dt><dd>find in marks</dd>
+    </dl>
+  </div>
+
+  <div>
+    <h1>Marks</h1>
+    <dl>
+      <dt>gm{a-z}</dt><dd>create mark named {a-z}</dd>
+      <dt>``</dt><dd>move to line and column of last position</dd>
+      <dt>''</dt><dd>move to first column in line of last position</dd>
+      <dt>`{a-z}</dt><dd>move to line and column of mark {a-z}</dd>
+      <dt>'{a-z}</dt><dd>move to first column in line of mark {a-z}</dd>
+    </dl>
+  </div>
+
+  <!--
+  <div>
+    <h1></h1>
+    <dl>
+      <dt>=</dt><dd>=</dd>
+    </dl>
+  </div>
+  -->
+
+</body>
+</html>

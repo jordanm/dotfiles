@@ -1,0 +1,5 @@
+#!/bin/sh
+if [[ "$1" == "vim" ]]; then
+  filename="vimref.html"
+fi
+/usr/bin/chromium --app=file:///home/jrm/.dotfiles/vimref.html

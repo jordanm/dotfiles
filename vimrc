@@ -5,6 +5,7 @@ set nocompatible
 set autoindent
 set backspace=indent,eol,start
 set browsedir=buffer
+set clipboard=unnamed
 set cmdheight=1
 set complete=.,w,b,u,t,i,k
 set display=lastline,uhex
@@ -58,6 +59,10 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'rking/ag.vim'
 Plugin 'wellle/targets.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-commentary'
+Plugin 'svermeulen/vim-easyclip'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'sgur/ctrlp-extensions.vim'
@@ -95,6 +100,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " general mappings
+nnoremap gm m
 nnoremap <silent> <leader>mm :marks<cr>                 " ,mm: show marks
 nnoremap <silent> <leader>rg :reg<cr>                   " ,rg: show registers
 noremap <silent> <F2> :update<cr>                       " F2: save current buffer
@@ -116,6 +122,7 @@ nnoremap <silent> <leader>wt <c-w>t                     " ,wt: move to top-left 
 nnoremap <silent> <leader>wb <c-w>b                     " ,wb: move to bottom-right window
 nnoremap <silent> <leader>ww <c-w>p                     " ,ww: move to previous window
 nnoremap <silent> <leader>wr <c-w>r                     " ,wr: rotate windows down/right
+nnoremap <silent> <leader>wx <c-w>x                     " ,wx: exchange window with next window
 nnoremap <silent> <leader>wn <c-w>n                     " ,wn: create new horizontal window
 nnoremap <silent> <leader>wo <c-w>o                     " ,wo: close all other windows
 nnoremap <silent> <leader>w= <c-w>=                     " ,w=: resize windows equally
@@ -134,12 +141,19 @@ let g:ctrlp_funky_syntax_highlight = 1
 let g:ctrlp_root_markers = ['.project']
 
 " ctrlp mappings
-nnoremap <silent> <leader>fb :CtrlPBuffer()
+nnoremap <silent> <leader>fb :CtrlPBuffer<cr>
 nnoremap <silent> <leader>ff :CtrlPMixed<cr>
 nnoremap <silent> <leader>fn :CtrlPFunky<cr>
-nnoremap <silent> <leader>fs :exec 'CtrlPFunky ' . expand('<cword>')<cr>
 nnoremap <silent> <leader>fy :CtrlPYankring<cr>
 nnoremap <silent> <leader>fm :CtrlPMark<cr>
+
+" easyclip configuration
+let g:EasyClipShareYanks = 1
+let g:EasyClipShareYanksDirectory = '$HOME/.vim'
+let g:EasyClipShareYanksFile = 'easyclip'
+
+imap <c-v> <plug>EasyClipInsertModePaste
+cmap <c-v> <plug>EasyClipCommandModePaste
 
 " format mappings
 nnoremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
