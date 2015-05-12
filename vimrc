@@ -47,6 +47,7 @@ set title
 set titlestring=[vim\ %{CountBuffers()}]\ %t%(\ %M%)
 set viminfo='20,<500,:20,s10,h,n$HOME/.viminfo
 set whichwrap=<,>,[,]
+set wildignore=*.py[co]
 set wildmenu
 set wildmode=longest:full,full
 set wrap
@@ -74,7 +75,7 @@ Plugin 'matze/vim-move'
 call vundle#end()
 filetype plugin indent on
 
-" don't allow use of the arrow keys
+" build the habits
 noremap <up> <nop>
 inoremap <up> <nop>
 noremap <down> <nop>
@@ -83,11 +84,15 @@ noremap <left> <nop>
 inoremap <left> <nop>
 noremap <right> <nop>
 inoremap <right> <nop>
+noremap <pageup> <nop>
+inoremap <pageup> <nop>
+noremap <pagedown> <nop>
+inoremap <pagedown> <nop>
 
 " basic mappings
-noremap <leader>,j J
+noremap <leader>j J
 noremap J <c-d>
-noremap <leader>,k K
+noremap <leader>k K
 noremap K <c-u>
 
 " basic insert mode mappings
@@ -101,40 +106,41 @@ vnoremap > >gv
 
 " general mappings
 nnoremap gm m
-nnoremap <silent> <leader>mm :marks<cr>                 " ,mm: show marks
-nnoremap <silent> <leader>rg :reg<cr>                   " ,rg: show registers
-noremap <silent> <F2> :update<cr>                       " F2: save current buffer
+nnoremap <silent> <leader>mm :marks<cr>
+nnoremap <silent> <leader>rg :reg<cr>
+noremap <silent> <F5> :update<cr>
+inoremap <silent> <F5> :update<cr>
 
 " file and path mappings
-nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>      " ,cd: change to directory of current buffer
-nnoremap <silent> <leader>cu :cd ..<cr>:pwd<cr>         " ,cu: change to higher directory
-nnoremap <silent> <leader>pw :pwd<cr>                   " ,pw: show current directory
-nnoremap <silent> <leader>qa :qa<cr>                    " ,qa: close all buffers and quit
-nnoremap <silent> <leader>fq :qa!<cr>                   " ,fq: force quit
+nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
+nnoremap <silent> <leader>cu :cd ..<cr>:pwd<cr>
+nnoremap <silent> <leader>pw :pwd<cr>
+nnoremap <silent> <leader>qa :qa<cr>
+nnoremap <silent> <leader>fq :qa!<cr>
 
 " window mappings
-nnoremap <silent> <leader>wc <c-w>c                     " ,wc: close current window
-nnoremap <silent> <leader>we <c-w>l                     " ,we: move to right window
-nnoremap <silent> <leader>wq <c-w>h                     " ,wq: move to left window
-nnoremap <silent> <leader>wd <c-w>j                     " ,wd: move to below window
-nnoremap <silent> <leader>w2 <c-w>k                     " ,w2: move to above window
-nnoremap <silent> <leader>wt <c-w>t                     " ,wt: move to top-left window
-nnoremap <silent> <leader>wb <c-w>b                     " ,wb: move to bottom-right window
-nnoremap <silent> <leader>ww <c-w>p                     " ,ww: move to previous window
-nnoremap <silent> <leader>wr <c-w>r                     " ,wr: rotate windows down/right
-nnoremap <silent> <leader>wx <c-w>x                     " ,wx: exchange window with next window
-nnoremap <silent> <leader>wn <c-w>n                     " ,wn: create new horizontal window
-nnoremap <silent> <leader>wo <c-w>o                     " ,wo: close all other windows
-nnoremap <silent> <leader>w= <c-w>=                     " ,w=: resize windows equally
-nnoremap <silent> <leader>ws :split<cr>                 " ,ws: split window horizontally
-nnoremap <silent> <leader>wv :vsplit<cr>                " ,wv: split window vertically
+nnoremap <silent> <leader>wc <c-w>c
+nnoremap <silent> <leader>we <c-w>l
+nnoremap <silent> <leader>wq <c-w>h
+nnoremap <silent> <leader>wd <c-w>j
+nnoremap <silent> <leader>w2 <c-w>k
+nnoremap <silent> <leader>wt <c-w>t
+nnoremap <silent> <leader>wb <c-w>b
+nnoremap <silent> <leader>ww <c-w>p
+nnoremap <silent> <leader>wr <c-w>r
+nnoremap <silent> <leader>wx <c-w>x
+nnoremap <silent> <leader>wn <c-w>n
+nnoremap <silent> <leader>wo <c-w>o
+nnoremap <silent> <leader>w= <c-w>=
+nnoremap <silent> <leader>ws :split<cr>
+nnoremap <silent> <leader>wv :vsplit<cr>
 
 " buffer mappings
-nnoremap <silent> <leader>bb :buffers<cr>               " ,bb: list all buffers
-nnoremap <silent> <leader>bc :bdelete<cr>               " ,bc: close buffer
-nnoremap <silent> <leader>bn :bnext<cr>                 " ,bn: go to next buffer
-nnoremap <silent> <leader>bv :bprevious<cr>             " ,bv: go to previous buffer
-nnoremap <silent> <leader>bm :bmod<cr>                  " ,bm: go to next modified buffer
+nnoremap <silent> <leader>bb :buffers<cr>
+nnoremap <silent> <leader>bc :bdelete<cr>
+nnoremap <silent> <leader>bn :bnext<cr>
+nnoremap <silent> <leader>bv :bprevious<cr>
+nnoremap <silent> <leader>bm :bmod<cr>
 
 " ctrlp configuration
 let g:ctrlp_funky_syntax_highlight = 1
@@ -152,6 +158,7 @@ let g:EasyClipShareYanks = 1
 let g:EasyClipShareYanksDirectory = '$HOME/.vim'
 let g:EasyClipShareYanksFile = 'easyclip'
 
+" easyclip mappings
 imap <c-v> <plug>EasyClipInsertModePaste
 cmap <c-v> <plug>EasyClipCommandModePaste
 
@@ -296,7 +303,7 @@ function! RenameFile()
 endfunction
 
 " strip all trailing whitespace
-noremap <leader>ss :call StripWhitespace()<cr>
+noremap <leader>sw :call StripWhitespace()<cr>
 function! StripWhitespace()
     exec ':%s/ \+$//gc'
 endfunction
