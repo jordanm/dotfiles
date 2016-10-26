@@ -13,7 +13,12 @@ if [[ -d $HOME/.dropbox-dist ]]; then
   $HOME/.dropbox-dist/dropboxd &
 fi
 
+if [[ -x /usr/bin/dunst ]]; then
+  /usr/bin/dunst &
+fi
+
 fbsetbg -r $HOME/.wallpapers
+xrandr --dpi 220
 ssh-agent fluxbox -log "$fluxdir/log" &
 
 fbpid=$!

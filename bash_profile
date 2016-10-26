@@ -29,8 +29,14 @@ export LESS='-i -z-4 -g -M -X -F -R -Q'
 export LILYTERM="/usr/bin/lilyterm -s"
 export NVM_DIR=$HOME/.nvm
 export PAGER=less
+export PGHOST=localhost
+export PGPORT=5432
 export PROJECTPATH=$HOME/p
 
 if [[ -f $HOME/.bashrc ]]; then
   source $HOME/.bashrc
+fi
+
+if [[ -s $HOME/.rvm/scripts/rvm" ]]; then
+  source $HOME/.rvm/scripts/rvm
 fi

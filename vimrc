@@ -44,33 +44,54 @@ set suffixes+=.pyo
 set tabstop=4
 set textwidth=0
 set title
-set titlestring=[vim\ %{CountBuffers()}]\ %t%(\ %M%)
+set titlestring=vim\ (%{CountBuffers()})\ %t%(\ %M%)
 set viminfo='20,<500,:20,s10,h,n$HOME/.viminfo
 set whichwrap=<,>,[,]
-set wildignore=*.py[co]
+set wildignore+=*.png,*.py[co],*.sw*,*.zip
+set wildignore+=*/.git/*,*/.svn/*,*/node_modules/*,*/tmp/*
 set wildmenu
 set wildmode=longest:full,full
 set wrap
 set wrapscan
+set updatetime=250
 
 filetype off
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'christoomey/vim-sort-motion'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'edkolev/promptline.vim'
 Plugin 'gmarik/Vundle.vim'
-Plugin 'rking/ag.vim'
-Plugin 'wellle/targets.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-commentary'
-Plugin 'svermeulen/vim-easyclip'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tacahiroy/ctrlp-funky'
-Plugin 'sgur/ctrlp-extensions.vim'
+Plugin 'jeetsukumaran/vim-indentwise'
+Plugin 'justinmk/vim-sneak'
+Plugin 'kana/vim-textobj-user'
+Plugin 'kchmck/vim-coffee-script'
 Plugin 'mattn/ctrlp-mark'
-Plugin 'terryma/vim-expand-region'
+Plugin 'mattn/emmet-vim'
 Plugin 'matze/vim-move'
-"Plugin 'airblade/vim-gitgutter'
+Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'rking/ag.vim'
+Plugin 'sgur/ctrlp-extensions.vim'
+Plugin 'svermeulen/vim-easyclip'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'terryma/vim-expand-region'
+Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-eunuch'
+Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'wellle/targets.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -96,7 +117,6 @@ noremap <leader>k K
 noremap K <c-u>
 
 " basic insert mode mappings
-inoremap jk <esc>
 inoremap <silent> <s-tab> <c-n>
 
 " basic visual mode mappings
@@ -135,6 +155,19 @@ nnoremap <silent> <leader>w= <c-w>=
 nnoremap <silent> <leader>ws :split<cr>
 nnoremap <silent> <leader>wv :vsplit<cr>
 
+" tab mappings
+nnoremap <silent> <leader>tc :tabclose<cr>
+nnoremap <silent> <leader>tn :$tabnew<cr>
+
+" concern mappings
+nnoremap <silent> <leader>cg :call ActivateConcern('general')<cr>
+nnoremap <silent> <leader>cc :call ActivateConcern('controllers')<cr>
+nnoremap <silent> <leader>cm :call ActivateConcern('models')<cr>
+nnoremap <silent> <leader>cp :call ActivateConcern('policies')<cr>
+nnoremap <silent> <leader>ct :call ActivateConcern('tests')<cr>
+nnoremap <silent> <leader>cs :call ActivateConcern('style')<cr>
+nnoremap <silent> <leader>ch :call ActivateConcern('html')<cr>
+
 " buffer mappings
 nnoremap <silent> <leader>bb :buffers<cr>
 nnoremap <silent> <leader>bc :bdelete<cr>
@@ -144,7 +177,10 @@ nnoremap <silent> <leader>bm :bmod<cr>
 
 " ctrlp configuration
 let g:ctrlp_funky_syntax_highlight = 1
-let g:ctrlp_root_markers = ['.project']
+let g:ctrlp_match_window = 'results:40'
+let g:ctrlp_max_files = 30000
+let g:ctrlp_root_markers = ['.git', '.project']
+"let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " ctrlp mappings
 nnoremap <silent> <leader>fb :CtrlPBuffer<cr>
@@ -162,308 +198,363 @@ let g:EasyClipShareYanksFile = 'easyclip'
 imap <c-v> <plug>EasyClipInsertModePaste
 cmap <c-v> <plug>EasyClipCommandModePaste
 
+" airline configuration
+let g:airline_powerline_fonts = 1
+
+" formats the gui tab label
+function! FormatTabLabel()
+  let label = '  '
+  if exists('t:concern') && strlen(t:concern) > 0
+    let label .= t:concern . ': '
+  endif
+
+  let buffers = tabpagebuflist(v:lnum)
+  let name = bufname(buffers[tabpagewinnr(v:lnum) - 1])
+
+  if strlen(name) > 0
+    let label .= fnamemodify(name, ':t') . ' '
+  else
+    let label .= '[unnamed] '
+  endif
+
+  let label .= tabpagewinnr(v:lnum, '$')
+  for bufnr in buffers
+    if getbufvar(bufnr, '&modified')
+      let label .= '+'
+      break
+    endif
+  endfor
+
+  let label .= '  '
+  return label
+endfunction
+
+set guitablabel=%{FormatTabLabel()}
+
+function! FindOpenConcern(concern)
+  let i = 1
+  while i <= tabpagenr('$')
+    if gettabvar(i, 'concern') == a:concern
+      return i
+    endif
+    let i += 1
+  endwhile
+endfunction
+
+" creates or goes to the tab page with the specified concern
+function! ActivateConcern(concern)
+  let tab = FindOpenConcern(a:concern)
+  if tab > 0
+    exec 'tabn ' . tab
+  else
+    $tabnew
+    let t:concern = a:concern
+  endif
+endfunction
+
+let t:concern = 'general'
+command! -nargs=1 AC call ActivateConcern(<f-args>)
+
 " format mappings
 nnoremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
-
 command! -nargs=1 -complete=file_in_path F find **/<args>
 
 " counts the number of open buffers
 function! CountBuffers()
-    return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+  return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
 endfunction
 
 " properly deletes the buffer, depending on context
-function s:Kwbd(kwbdStage)
-    if(a:kwbdStage == 1)
-        if(!buflisted(winbufnr(0)))
-            bd!
-            return
-        endif
-        let s:kwbdBufNum = bufnr('%')
-        let s:kwbdWinNum = winnr()
-        windo call s:Kwbd(2)
-        execute s:kwbdWinNum . 'wincmd w'
-        let s:buflistedLeft = 0
-        let s:bufFinalJump = 0
-        let l:nBufs = bufnr('$')
-        let l:i = 1
-        while(l:i <= l:nBufs)
-            if(l:i != s:kwbdBufNum)
-                if(buflisted(l:i))
-                    let s:buflistedLeft = s:buflistedLeft + 1
-                else
-                    if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
-                        let s:bufFinalJump = l:i
-                    endif
-                endif
-            endif
-            let l:i = l:i + 1
-        endwhile
-        if(!s:buflistedLeft)
-            if(s:bufFinalJump)
-                windo if(buflisted(winbufnr(0))) | execute 'b! ' . s:bufFinalJump | endif
-            else
-                enew
-                let l:newBuf = bufnr('%')
-                windo if(buflisted(winbufnr(0))) | execute 'b! ' . l:newBuf | endif
-            endif
-            execute s:kwbdWinNum . 'wincmd w'
-        endif
-        if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr('%'))
-            execute 'bd! ' . s:kwbdBufNum
-        endif
-        if(!s:buflistedLeft)
-            set buflisted
-            set bufhidden=delete
-            set buftype=nofile
-            setlocal noswapfile
-        endif
-    else
-        if(bufnr('%') == s:kwbdBufNum)
-            let prevbufvar = bufnr('#')
-            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
-                b #
-            else
-                bn
-            endif
-        endif
+function! s:Kwbd(kwbdStage)
+  if(a:kwbdStage == 1)
+    if(!buflisted(winbufnr(0)))
+      bd!
+      return
     endif
+    let s:kwbdBufNum = bufnr('%')
+    let s:kwbdWinNum = winnr()
+    windo call s:Kwbd(2)
+    execute s:kwbdWinNum . 'wincmd w'
+    let s:buflistedLeft = 0
+    let s:bufFinalJump = 0
+    let l:nBufs = bufnr('$')
+    let l:i = 1
+    while(l:i <= l:nBufs)
+      if(l:i != s:kwbdBufNum)
+        if(buflisted(l:i))
+          let s:buflistedLeft = s:buflistedLeft + 1
+        else
+          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+            let s:bufFinalJump = l:i
+          endif
+        endif
+      endif
+      let l:i = l:i + 1
+    endwhile
+    if(!s:buflistedLeft)
+      if(s:bufFinalJump)
+        windo if(buflisted(winbufnr(0))) | execute 'b! ' . s:bufFinalJump | endif
+      else
+        enew
+        let l:newBuf = bufnr('%')
+        windo if(buflisted(winbufnr(0))) | execute 'b! ' . l:newBuf | endif
+      endif
+      execute s:kwbdWinNum . 'wincmd w'
+    endif
+    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr('%'))
+      execute 'bd! ' . s:kwbdBufNum
+    endif
+    if(!s:buflistedLeft)
+      set buflisted
+      set bufhidden=delete
+      set buftype=nofile
+      setlocal noswapfile
+    endif
+  else
+    if(bufnr('%') == s:kwbdBufNum)
+      let prevbufvar = bufnr('#')
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
 endfunction
 
 command! Kwbd call <sid>Kwbd(1)
 noremap <silent> <leader>bd :Kwbd<cr>
-
-" transfers the current buffer to a new gvim instance
-noremap <silent> <leader>nn :call TransferBuffer()<cr>
-function! TransferBuffer()
-    let l:bname = bufname('%')
-    if strlen(l:bname) > 0
-        write!
-        bdelete!
-        call system('gvim ' . l:bname)
-    endif
-endfunction
-
-" opens the current buffer read-online in a new gvim instance
-noremap <silent> <leader>nr :silent call system('gvim -R ' . bufname('%'))<cr>
 
 " <space>
 noremap <space> /
 vnoremap <silent> <space> <c-c>:call VisualSearch('f')<cr>
 vnoremap <silent> <?> <c-c>:call VisualSearch('b')<cr>
 function! VisualSearch(direction)
-    let l:saved_reg = @"
-    execute 'normal! vgvy'
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, '\n$', '', '')
-    if a:direction == 'b'
-        execute 'normal ?' . l:pattern . '^M'
-    else
-        execute 'normal /' . l:pattern . '^M'
-    endif
-    let @/ = l:pattern
-    let @" = l:saved_reg
+  let l:saved_reg = @"
+  execute 'normal! vgvy'
+  let l:pattern = escape(@", '\\/.*$^~[]')
+  let l:pattern = substitute(l:pattern, '\n$', '', '')
+  if a:direction == 'b'
+    execute 'normal ?' . l:pattern . '^M'
+  else
+    execute 'normal /' . l:pattern . '^M'
+  endif
+  let @/ = l:pattern
+  let @" = l:saved_reg
 endfunction
 
 " <home>: smart home
 noremap <silent> <Home> :call Home()<cr>
 function! Home()
-    let l:indent = indent(line('.')) + 1
-    if col('.') > l:indent
-        let l:position = col('.')
-        normal g0
-        if col('.') == l:position || col('.') < l:indent
-            normal ^
-        endif
-    else
-        normal 0
+  let indent = indent(line('.')) + 1
+  if col('.') > indent
+    let position = col('.')
+    normal g0
+    if col('.') == position || col('.') < indent
+      normal ^
     endif
+  else
+    normal 0
+  endif
 endfunction
 
 " <end>: smart end
 noremap <silent> <End> :call End()<cr>
 function! End()
-    let l:position = col('.')
-    normal g$
-    if col('.') == l:position
-        normal $
-    endif
+  let position = col('.')
+  normal g$
+  if col('.') == position
+    normal $
+  endif
 endfunction
 
 " rename the current file
 noremap <leader>nm :call RenameFile()<cr>
 function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
 endfunction
 
 " strip all trailing whitespace
 noremap <leader>sw :call StripWhitespace()<cr>
 function! StripWhitespace()
-    exec ':%s/ \+$//gc'
+  exec ':%s/ \+$//gc'
 endfunction
 
 syntax on
-hi Comment          ctermfg=Grey
-hi Constant         ctermfg=DarkGrey cterm=none
-hi Define           ctermfg=DarkGreen cterm=none
-hi Error            ctermfg=Green
-hi IncSearch        ctermfg=White ctermbg=Cyan cterm=none
-hi Identifier       ctermfg=Blue cterm=none
-hi Label            ctermfg=DarkGreen cterm=none
-hi LineNr           ctermfg=Grey
-hi MoreMsg          ctermfg=DarkCyan
-hi Number           ctermfg=DarkGrey
-hi Operator         ctermfg=Grey
-hi PreProc          ctermfg=DarkGreen cterm=none
-hi Search           ctermfg=White ctermbg=Cyan cterm=none
-hi Special          ctermfg=Yellow cterm=none
-hi SpecialChar      ctermfg=Green
-hi SpecialComment   ctermfg=DarkBlue
-hi SpecialKey       ctermfg=DarkGrey
-hi Statement        ctermfg=Green cterm=none
-hi StatusLine       ctermfg=DarkCyan cterm=none
-hi String           ctermfg=Grey
-hi Structure        ctermfg=DarkCyan
-hi TabLine          ctermfg=White
-hi TabLineFill      cterm=none
-hi TabLineSel       ctermfg=Yellow
-hi Tag              ctermfg=LightCyan
-hi Todo             ctermfg=DarkCyan
-hi Type             ctermfg=DarkCyan
-hi User1            ctermfg=LightCyan
+"hi Comment          ctermfg=Grey
+"hi Constant         ctermfg=DarkGrey cterm=none
+"hi Define           ctermfg=DarkGreen cterm=none
+"hi Error            ctermfg=Green
+"hi IncSearch        ctermfg=White ctermbg=Cyan cterm=none
+"hi Identifier       ctermfg=Blue cterm=none
+"hi Label            ctermfg=DarkGreen cterm=none
+"hi LineNr           ctermfg=Grey
+"hi MoreMsg          ctermfg=DarkCyan
+"hi Number           ctermfg=DarkGrey
+"hi Operator         ctermfg=Grey
+"hi PreProc          ctermfg=DarkGreen cterm=none
+"hi Search           ctermfg=White ctermbg=Cyan cterm=none
+"hi Special          ctermfg=Yellow cterm=none
+"hi SpecialChar      ctermfg=Green
+"hi SpecialComment   ctermfg=DarkBlue
+"hi SpecialKey       ctermfg=DarkGrey
+"hi Statement        ctermfg=Green cterm=none
+"hi StatusLine       ctermfg=DarkCyan cterm=none
+"hi String           ctermfg=Grey
+"hi Structure        ctermfg=DarkCyan
+"hi TabLine          ctermfg=White
+"hi TabLineFill      cterm=none
+"hi TabLineSel       ctermfg=Yellow
+"hi Tag              ctermfg=LightCyan
+"hi Todo             ctermfg=DarkCyan
+"hi Type             ctermfg=DarkCyan
+"hi User1            ctermfg=LightCyan
 
 augroup autocommands
-    au!
-    au filetype * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    au filetype css,less,html,htmldjango,mako,scss,sh,xhtml,xml,yaml setlocal sw=2 ts=2
-    au filetype javascript setlocal smartindent nocindent
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
-    au BufRead,BufNewFile Bakefile,bakefile setlocal filetype=python
-    au BufRead,BufNewFile *.scss setlocal sw=2 ts=2 filetype=css
-    au BufRead,BufNewFile SConstruct,SConscript setlocal filetype=python
-    au BufRead,BufNewFile *.txt setlocal textwidth=0
+  au!
+  au filetype * setl fo-=c fo-=r fo-=o
+  au filetype css,erb,json,less,html,lua,mako,scss,sh,styl,vim,xml,yaml setl sw=2 ts=2
+  au filetype coffee setl sw=2 ts=2 cc=100
+  au filetype javascript setl sw=2 ts=2 cc=100
+  au filetype ruby setl sw=2 ts=2 cc=100
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
+  au BufRead,BufNewFile Bakefile,bakefile setl filetype=python
+  au BufRead,BufNewFile *.scss setl sw=2 ts=2 filetype=css
+  au BufRead,BufNewFile *.erb setlocal sw=2 ts=2
+  au BufRead,BufNewFile *.txt setlocal textwidth=0
 augroup end
 
 let g:pyindent_open_paren = '&sw'
 let g:pyindent_continue = '&sw'
 
 function! ResetSession()
-    let l:last = bufnr('$')
-    let l:n = 1
-    while l:n <= l:last
-        if buflisted(l:n)
-            silent exec 'bdel! ' . l:n
-        endif
-        let l:n = l:n + 1
-    endwhile
-    if strlen(g:pdir) > 0
-        let l:session = findfile('session.vim', g:pdir)
-        if strlen(l:session) > 0
-            silent exec '!rm ' . l:session
-        endif
+  let l:last = bufnr('$')
+  let l:n = 1
+  while l:n <= l:last
+    if buflisted(l:n)
+      silent exec 'bdel! ' . l:n
     endif
-    silent exec 'vsplit'
-    echo 'session reset'
+    let l:n = l:n + 1
+  endwhile
+  if strlen(g:pdir) > 0
+    let l:session = findfile('session.vim', g:pdir)
+    if strlen(l:session) > 0
+      silent exec '!rm ' . l:session
+    endif
+  endif
+  silent exec 'vsplit'
+  echo 'session reset'
 endfunction
 
 function! LoadProject()
-    let l:pdir = finddir('.project', '.;')
-    if strlen(l:pdir) > 0
-        let g:pdir = fnamemodify(l:pdir, ':p')
-        let g:proot = simplify(g:pdir . '/..')
-        let l:pfile = findfile('project.vim', g:pdir)
-        if strlen(l:pfile) > 0
-            silent exec 'source ' . l:pfile
-        endif
-        let l:tagsfile = findfile('tags', g:pdir)
-        if strlen(l:tagsfile) > 0
-            silent exec 'set tags=' . l:tagsfile
-        endif
-        exec 'set titlestring=%([' . $PROJECTNAME . '\ %{CountBuffers()}]\ %)%t%(\ %M%)'
-        silent exec 'set path=' . getcwd() . '/**,' . &path
-    endif
+  let l:pdir = finddir('.project', '.;')
+  if strlen(l:pdir) == 0
+    return
+  endif
+
+  let g:pdir = fnamemodify(l:pdir, ':p')
+  let g:proot = simplify(g:pdir . '/..')
+
+  let l:pfile = findfile('project.vim', g:pdir)
+  if strlen(l:pfile) > 0
+    silent exec 'source ' . l:pfile
+  endif
+
+  let l:gfile = findfile($GROUPNAME . '.vim', g:pdir)
+  if strlen(l:gfile) > 0
+    silent exec 'source ' . l:gfile
+  endif
+
+  let l:title = $PROJECTNAME
+  if strlen($GROUPNAME) > 0
+    let l:title = $PROJECTNAME . '::' . $GROUPNAME
+  endif
+
+  exec 'set titlestring=%(' . l:title . '\ (%{CountBuffers()})\ %)%t%(\ %M%)'
+  " silent exec 'set path=' . getcwd() . '/**,' . &path
 endfunction
+
 call LoadProject()
 
 let g:default_project_extensions = ['py', 'rst']
 
 function! EditProjectFile(name, split)
-    let l:ext = fnamemodify(a:name, ':e')
-    if strlen(l:ext) > 0
-        let l:candidate = findfile(a:name, g:proot . '/**')
+  let l:ext = fnamemodify(a:name, ':e')
+  if strlen(l:ext) > 0
+    let l:candidate = findfile(a:name, g:proot . '/**')
+  else
+    for l:ext in g:default_project_extensions
+      let l:candidate = findfile(a:name . '.' . l:ext, g:proot . '/**')
+      if strlen(l:candidate) > 0
+        break
+      endif
+    endfor
+  endif
+  if strlen(l:candidate) > 0
+    if a:split
+      exec ":split " . l:candidate
     else
-        for l:ext in g:default_project_extensions
-            let l:candidate = findfile(a:name . '.' . l:ext, g:proot . '/**')
-            if strlen(l:candidate) > 0
-                break
-            endif
-        endfor
+      exec ":edit " . l:candidate
     endif
-    if strlen(l:candidate) > 0
-        if a:split
-            exec ":split " . l:candidate
-        else
-            exec ":edit " . l:candidate
-        endif
-    endif
+  endif
 endfunction
 
 command! -nargs=1 -complete=file_in_path FP call EditProjectFile(<f-args>, 0)
 command! -nargs=1 -complete=file_in_path FS call EditProjectFile(<f-args>, 1)
 
 function! EditTestFile(name, split)
-    let l:target = a:name
-    if strpart(l:target, 0, 5) != 'test_'
-        let l:target = 'test_' . l:target
+  let l:target = a:name
+  if strpart(l:target, 0, 5) != 'test_'
+    let l:target = 'test_' . l:target
+  endif
+  if fnamemodify(l:target, ':e') != 'py'
+    let l:target = l:target . '.py'
+  endif
+  let l:target = findfile(l:target, g:proot . '/**')
+  echo l:target
+  if strlen(l:target) > 0
+    if a:split
+      exec ":split " . l:target
+    else
+      exec ":edit " . l:target
     endif
-    if fnamemodify(l:target, ':e') != 'py'
-        let l:target = l:target . '.py'
-    endif
-    let l:target = findfile(l:target, g:proot . '/**')
-    echo l:target
-    if strlen(l:target) > 0
-        if a:split
-            exec ":split " . l:target
-        else
-            exec ":edit " . l:target
-        endif
-    endif
+  endif
 endfunction
 
 command! -nargs=1 -complete=file_in_path FT call EditTestFile(<f-args>, 0)
 
 function! GenerateProjectTags()
-    if strlen(g:pdir) > 0
-        silent exec '!generate-project-tags ' . g:pdir
-        echo 'project tags generated'
-    end
+  if strlen(g:pdir) > 0
+    silent exec '!generate-project-tags ' . g:pdir
+    echo 'project tags generated'
+  end
 endfunction
 
 function! InvokeProjectScript(filename)
-    if strlen(g:pdir) > 0
-        let l:scriptfile = findfile(a:filename, g:pdir)
-        if strlen(l:scriptfile) > 0
-            exec '!' . l:scriptfile
-        endif
+  if strlen(g:pdir) > 0
+    let l:scriptfile = findfile(a:filename, g:pdir)
+    if strlen(l:scriptfile) > 0
+      exec '!' . l:scriptfile
     endif
+  endif
 endfunction
 
 function! SaveProjectSession(quit)
-    if strlen(g:pdir) > 0
-        silent exec 'wa!'
-        silent exec 'mksession! ' . g:pdir . '/session.vim'
-        if a:quit
-            exec 'qa'
-        else
-            echo 'project session saved'
-        endif
+  if strlen(g:pdir) > 0
+    silent exec 'wa!'
+    silent exec 'mksession! ' . g:pdir . '/session.vim'
+    if a:quit
+      exec 'qa'
+    else
+      echo 'project session saved'
     endif
+  endif
 endfunction
 
 noremap <silent> <leader>gt :call GenerateProjectTags()<cr>
