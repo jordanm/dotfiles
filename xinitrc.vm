@@ -19,7 +19,7 @@ fi
 
 fbsetbg -r $HOME/.wallpapers
 xrandr --dpi 220
-ssh-agent fluxbox -log "$fluxdir/log" &
+ssh-agent fluxbox -log ".fluxbox-log" &
 
 fbpid=$!
 wait $fbpid

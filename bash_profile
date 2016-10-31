@@ -26,7 +26,7 @@ export HISTIGNORE="&:ls:la:ll:cd:exit:history:clear"
 export HISTSIZE=999999
 export HISTFILESIZE=999999
 export LESS='-i -z-4 -g -M -X -F -R -Q'
-export LILYTERM="/usr/bin/lilyterm -s"
+export LILYTERM="/usr/bin/lilyterm -sl"
 export NVM_DIR=$HOME/.nvm
 export PAGER=less
 export PGHOST=localhost
@@ -35,8 +35,4 @@ export PROJECTPATH=$HOME/p
 
 if [[ -f $HOME/.bashrc ]]; then
   source $HOME/.bashrc
-fi
-
-if [[ -s $HOME/.rvm/scripts/rvm" ]]; then
-  source $HOME/.rvm/scripts/rvm
 fi

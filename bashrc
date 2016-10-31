@@ -51,6 +51,10 @@ alias q='exit'
 alias rmpyc='find . -name "*.pyc" -delete'
 alias tree='tree -l'
 
+cpt() {
+  fluxbox-remote "clientpatterntest $1" && fluxbox-remote result
+}
+
 gh() { 
   history | egrep -v '  history|  gh' | grep --color $1 | tail -1
 }
@@ -151,3 +155,5 @@ __local_git_complete gph _git_push
 __local_git_complete gpl _git_pull
 __local_git_complete gpu _git_push
 __local_git_complete grp _git_grep
+
+source $HOME/.rvm/scripts/rvm

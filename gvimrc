@@ -6,6 +6,7 @@ set guioptions-=m
 set guioptions-=r
 set guioptions-=t
 set guioptions-=T
+set guioptions-=L
 set keymodel=startsel,stopsel
 set lines=90
 set mousehide
