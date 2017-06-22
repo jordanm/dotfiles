@@ -88,6 +88,7 @@ alias gst='git st'
 ff() { find . -type f -iname '*'$*'*' -print; }
 fd() { find . -type d -iname '*'$*'*' -print; }
 fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;; }
+vf() { find . -type f -iname '*'$1'*' -exec gvim -O {} +; }
 
 fs() {
   if [[ -n "$@" ]]; then

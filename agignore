@@ -2,3 +2,9 @@
 *.sw*
 __pycache__/*
 cover/*
+generated_assets/*
+*.min.js
+_new_relic.html
+jquery-3.0.0.min.js
+companylist1.json
+vendor_categories.json

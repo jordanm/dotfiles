@@ -89,11 +89,10 @@ mod4 F8 :taketoworkspace 8
 
 # fluxbox bindings
 mod4 slash :rootmenu
-mod4 grave :exec fbrun -font "Lucida Console-9" -w 400 -fg white -bg black
+mod4 grave :exec fbrun -font "Note Mono-7" -w 400 -fg white -bg black
 mod4 r :reconfigure
-mod4 q :close
-mod4 ctrl q :kill
-mod4 w :clientmenu (workspace=[current])
+mod4 ctrl z :kill
+#mod4 w :clientmenu (workspace=[current])
 
 # terminal bindings
 mod4 Return :if {some matches (lilyterm) (title!=console) (workspace=[current])} {nextwindow (lilyterm) (title!=console) (workspace=[current])} {exec start-terminal}
@@ -105,15 +104,17 @@ mod4 bracketright :exec start-terminal _last
 # gvim bindings
 mod4 space :if {some matches (gvim) (workspace=[current])} {nextwindow (gvim) (workspace=[current])} {exec gvim}
 mod4 v :exec gvim
-mod4 p :exec launch-project
+mod4 p mod4 o :exec launch-project
+mod4 p mod4 p :if {some matches (gvim) (title=rigup.*)} {activate (gvim) (title=rigup.*)} {exec launch-project rigup}
 
 # application bindings
-mod4 c :if {some matches (Chromium) (workspace=[current])} {nextwindow (Chromium) (workspace=[current])} {exec chromium}
-mod4 f :if {some matches (Navigator) (workspace=[current])} {nextwindow (Navigator) (workspace=[current])} {exec firefox}
-mod4 k :if {some matches (.*[.]slack[.]com__messages)} {activate (.*[.]slack[.]com__messages)} {exec slack}
-mod4 t :if {some matches (en.todoist.com__app)} {activate (en.todoist.com__app)} {exec todoist}
-mod4 s :if {some matches (skype) (role=ConversationsWindow)} {activate (skype) (role=ConversationsWindow)} {if {some matches (skype)} {activate (skype)} {exec secured-skype}}}
+mod4 c :if {some matches (class=Chromium) (role=browser) (workspace=[current])} {nextwindow (class=Chromium) (role=browser) (workspace=[current])} {exec launch-chromium}
+mod4 n :if {some matches (focus.nirvanahq.com)} {activate (focus.nirvanahq.com)} {exec launch-nirvana}
+mod4 s :if {some matches (slack)} {activate (slack)} {exec launch-slack}
+mod4 w :if {some matches (workflowy.com)} {activate (workflowy.com)} {exec launch-workflowy}
 mod4 Print :exec fbsetbg -r $HOME/.wallpapers
+mod4 l :exec screenshot
 
 # help bindings
-mod4 h mod4 v :if {some matches (.*vimref.html.*)} {close (.*vimref.html.*)} {exec showhelp vim}
+mod4 e mod4 d :if {some matches (title=.*DevDocs.*)} {activate (title=.*DevDocs.*)} {exec launch-chrome-app devdocs}
+mod4 e mod4 v :if {some matches (class=chromium) (.*vimref.html.*)} {close (class=chromium) (.*vimref.html.*)} {exec showhelp vim}

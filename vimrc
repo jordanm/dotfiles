@@ -4,6 +4,7 @@ let g:mapleader = ','
 set nocompatible
 set autoindent
 set backspace=indent,eol,start
+set backupcopy=yes
 set browsedir=buffer
 set clipboard=unnamed
 set cmdheight=1
@@ -65,26 +66,26 @@ Plugin 'christoomey/vim-sort-motion'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'edkolev/promptline.vim'
 Plugin 'gmarik/Vundle.vim'
-Plugin 'jeetsukumaran/vim-indentwise'
-Plugin 'justinmk/vim-sneak'
+"Plugin 'jeetsukumaran/vim-indentwise'
+"Plugin 'justinmk/vim-sneak'
 Plugin 'kana/vim-textobj-user'
-Plugin 'kchmck/vim-coffee-script'
+"Plugin 'kchmck/vim-coffee-script'
 Plugin 'mattn/ctrlp-mark'
-Plugin 'mattn/emmet-vim'
-Plugin 'matze/vim-move'
-Plugin 'othree/html5.vim'
+"Plugin 'mattn/emmet-vim'
+"Plugin 'matze/vim-move'
+"Plugin 'othree/html5.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
 Plugin 'sgur/ctrlp-extensions.vim'
 Plugin 'svermeulen/vim-easyclip'
 Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'terryma/vim-expand-region'
-Plugin 'tpope/vim-abolish'
+"Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-endwise'
+"Plugin 'tpope/vim-dispatch'
+"Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-fugitive'
 "Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
@@ -325,6 +326,13 @@ endfunction
 command! Kwbd call <sid>Kwbd(1)
 noremap <silent> <leader>bd :Kwbd<cr>
 
+noremap <silent> <leader>fi :call FixImport()<cr>
+function! FixImport()
+  silent execute ':s/var/import'
+  silent execute ':s/= require(/from /'
+  silent execute ':s/);/;'
+endfunction
+
 " <space>
 noremap <space> /
 vnoremap <silent> <space> <c-c>:call VisualSearch('f')<cr>
@@ -425,7 +433,7 @@ augroup autocommands
   au filetype ruby setl sw=2 ts=2 cc=100
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe "normal g'\"" | endif
   au BufRead,BufNewFile Bakefile,bakefile setl filetype=python
-  au BufRead,BufNewFile *.scss setl sw=2 ts=2 filetype=css
+  au BufRead,BufNewFile *.scss setl sw=2 ts=2 filetype=scss
   au BufRead,BufNewFile *.erb setlocal sw=2 ts=2
   au BufRead,BufNewFile *.txt setlocal textwidth=0
 augroup end

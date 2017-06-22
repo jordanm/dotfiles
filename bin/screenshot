@@ -1,0 +1,4 @@
+#!/bin/sh
+filename="$(date +'%a%b%d-%H.%M.%S').png"
+gnome-screenshot -a -f "/home/jrm/screenshots/$filename"
+notify-send -t 3000 "Screenshot Taken" "Saved to $filename."
