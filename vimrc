@@ -129,8 +129,6 @@ vnoremap > >gv
 nnoremap gm m
 nnoremap <silent> <leader>mm :marks<cr>
 nnoremap <silent> <leader>rg :reg<cr>
-noremap <silent> <F5> :update<cr>
-inoremap <silent> <F5> :update<cr>
 
 " file and path mappings
 nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -159,15 +157,6 @@ nnoremap <silent> <leader>wv :vsplit<cr>
 " tab mappings
 nnoremap <silent> <leader>tc :tabclose<cr>
 nnoremap <silent> <leader>tn :$tabnew<cr>
-
-" concern mappings
-nnoremap <silent> <leader>cg :call ActivateConcern('general')<cr>
-nnoremap <silent> <leader>cc :call ActivateConcern('controllers')<cr>
-nnoremap <silent> <leader>cm :call ActivateConcern('models')<cr>
-nnoremap <silent> <leader>cp :call ActivateConcern('policies')<cr>
-nnoremap <silent> <leader>ct :call ActivateConcern('tests')<cr>
-nnoremap <silent> <leader>cs :call ActivateConcern('style')<cr>
-nnoremap <silent> <leader>ch :call ActivateConcern('html')<cr>
 
 " buffer mappings
 nnoremap <silent> <leader>bb :buffers<cr>
@@ -204,59 +193,108 @@ let g:airline_powerline_fonts = 1
 
 " formats the gui tab label
 function! FormatTabLabel()
-  let label = '  '
-  if exists('t:concern') && strlen(t:concern) > 0
-    let label .= t:concern . ': '
+  let label = '  F' . v:lnum . '  '
+  if exists('t:name') && strlen(t:name) > 0
+    let label .= t:name
   endif
+  let label .= '  ' . tabpagewinnr(v:lnum, '$')
 
-  let buffers = tabpagebuflist(v:lnum)
-  let name = bufname(buffers[tabpagewinnr(v:lnum) - 1])
-
-  if strlen(name) > 0
-    let label .= fnamemodify(name, ':t') . ' '
-  else
-    let label .= '[unnamed] '
-  endif
-
-  let label .= tabpagewinnr(v:lnum, '$')
-  for bufnr in buffers
+  let modified = 0
+  for bufnr in tabpagebuflist(v:lnum)
     if getbufvar(bufnr, '&modified')
-      let label .= '+'
-      break
+      let modified += 1
     endif
   endfor
+
+  if modified > 0
+    let label .= '+' . modified
+  endif
 
   let label .= '  '
   return label
 endfunction
 
+" function! FormatTabLabel()
+"   let label = '  '
+"   if exists('t:concern') && strlen(t:concern) > 0
+"     let label .= t:concern . ': '
+"   endif
+
+"   let buffers = tabpagebuflist(v:lnum)
+"   let name = bufname(buffers[tabpagewinnr(v:lnum) - 1])
+
+"   if strlen(name) > 0
+"     let label .= fnamemodify(name, ':t') . ' '
+"   else
+"     let label .= '[unnamed] '
+"   endif
+
+"   let label .= tabpagewinnr(v:lnum, '$')
+"   for bufnr in buffers
+"     if getbufvar(bufnr, '&modified')
+"       let label .= '+'
+"       break
+"     endif
+"   endfor
+
+"   let label .= '  '
+"   return label
+" endfunction
+
+let t:name = 'work'
 set guitablabel=%{FormatTabLabel()}
 
-function! FindOpenConcern(concern)
+function! FindOpenTab(name)
   let i = 1
   while i <= tabpagenr('$')
-    if gettabvar(i, 'concern') == a:concern
+    if gettabvar(i, 'name') == a:name
       return i
     endif
     let i += 1
   endwhile
 endfunction
 
-" creates or goes to the tab page with the specified concern
-function! ActivateConcern(concern)
-  let tab = FindOpenConcern(a:concern)
+function! ActivateTab(name)
+  let tab = FindOpenTab(a:name)
   if tab > 0
     exec 'tabn ' . tab
   else
     $tabnew
-    let t:concern = a:concern
+    let t:name = a:name
   endif
 endfunction
 
-let t:concern = 'general'
-command! -nargs=1 AC call ActivateConcern(<f-args>)
+function! NameTab(name)
+  let t:name = a:name
+endfunction
 
-" format mappings
+command! -nargs=1 T call ActivateTab(<f-args>)
+command! -nargs=1 TT call NameTab(<f-args>)
+
+function! OpenOrActivateTab(n)
+  if a:n <= tabpagenr('$')
+    exec 'tabn ' . a:n
+  else
+    let i = tabpagenr('$') + 1
+    while i <= a:n
+      exec '$tabnew'
+      let t:name = 'work'
+      let i += 1
+    endwhile
+  endif
+endfunction
+
+nnoremap <silent> <F1> :call OpenOrActivateTab(1)<cr>
+nnoremap <silent> <F2> :call OpenOrActivateTab(2)<cr>
+nnoremap <silent> <F3> :call OpenOrActivateTab(3)<cr>
+nnoremap <silent> <F4> :call OpenOrActivateTab(4)<cr>
+nnoremap <silent> <F5> :call OpenOrActivateTab(5)<cr>
+nnoremap <silent> <F6> :call OpenOrActivateTab(6)<cr>
+nnoremap <silent> <F7> :call OpenOrActivateTab(7)<cr>
+nnoremap <silent> <F8> :call OpenOrActivateTab(8)<cr>
+nnoremap <silent> <F9> :call OpenOrActivateTab(9)<cr>
+nnoremap <silent> <F10> :call OpenOrActivateTab(10)<cr>
+
 nnoremap <silent> <leader>fe GoZ<Esc>:g/^$/.,/./-j<cr>Gdd:noh<cr>
 command! -nargs=1 -complete=file_in_path F find **/<args>
 
