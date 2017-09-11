@@ -1,0 +1,63 @@
+#!/bin/bash
+dir=$1
+b=$(cat /sys/class/backlight/intel_backlight/brightness)
+
+setb () {
+  sudo su -c "echo '$1' > /sys/class/backlight/intel_backlight/brightness"
+}
+
+if [[ "$dir" == "down" ]]; then
+  case $b in
+    937)
+      setb "837"
+      ;;
+    837)
+      setb "737"
+      ;;
+    737)
+      setb "637"
+      ;;
+    637)
+      setb "537"
+      ;;
+    537)
+      setb "437"
+      ;;
+    437)
+      setb "337"
+      ;;
+    337)
+      setb "237"
+      ;;
+    237)
+      setb "137"
+      ;;
+  esac
+elif [[ "$dir" == "up" ]]; then
+  case $b in
+    837)
+      setb "937"
+      ;;
+    737)
+      setb "837"
+      ;;
+    637)
+      setb "737"
+      ;;
+    537)
+      setb "637"
+      ;;
+    437)
+      setb "537"
+      ;;
+    337)
+      setb "437"
+      ;;
+    237)
+      setb "337"
+      ;;
+    137)
+      setb "237"
+      ;;
+  esac
+fi

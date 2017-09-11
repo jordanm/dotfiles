@@ -4,33 +4,19 @@
   [deco] {border}
 [end]
 [app] (gvim)
+  [deco] {border}
   [position] (CENTER) {0 0}
 [end]
-[app] (lilyterm) (title!=console)
+[app] (lilyterm) (role!=console)
   [position] (CENTER) {0 0}
+  [deco] {border}
 [end]
-[app] (title=console)
+[app] (lilyterm) (role=console)
   [layer] {Dock}
-  [dimensions] {100% 50%}
+  [dimensions] {100% 40%}
   [position] (topleft) {0 0}
   [deco] {border}
   [iconhidden] {yes}
-  [sticky] {yes}
-[end]
-[app] (skype) (title=mccoy.jordan - Skype™)
-  [dimensions] {340 1000}
-  [position] (topright) {0 100}
-  [iconhidden] {yes}
-  [sticky] {yes}
-  [deco] {tiny}
-[end]
-[app] (skype) (role=ConversationsWindow)
-  [dimensions] {1000 800}
-  [position] (center) {0 0}
-[end]
-[app] (.*[.]slack[.]com__messages) (class=Chromium)
-  [dimensions] {1100 1540}
-  [position] (topleft) {30 30}
 [end]
 [app] (en.todoist.com__app) (class=Chromium)
   [dimensions] {1020 1400}
@@ -39,4 +25,8 @@
 [app] (.*ref.html.*) (class=Chromium)
   [dimensions] {1300 1540}
   [position] (topleft) {30 30}
+[end]
+[app] (slack)
+  [deco] {border}
+  [iconhidden] {yes}
 [end]

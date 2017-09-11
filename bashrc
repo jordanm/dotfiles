@@ -159,7 +159,3 @@ __local_git_complete gpu _git_push
 __local_git_complete grp _git_grep
 
 source $HOME/.rvm/scripts/rvm
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
